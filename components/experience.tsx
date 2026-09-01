@@ -270,7 +270,7 @@ export function Experience({
                 2027—without sharing personal information.
               </p>
             </div>
-            <button onClick={() => setEntered(false)} className="secondary">
+            <button onClick={() => window.location.assign('/')} className="secondary">
               <Languages />
               Change language or state
             </button>
