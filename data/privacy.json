@@ -1,0 +1,56 @@
+{
+  "title": "Your Data. Your Trust.",
+  "tagline": "Civic privacy principles and safety charter for Census 2027",
+  "censusActProtections": {
+    "section15": "Section 15 of the Census Act, 1948 provides absolute statutory protection for individual census schedules. Individual records cannot be used as evidence against any person in judicial or tax proceedings, nor can they be disclosed to third parties or other government enforcement agencies.",
+    "anonymizedAggregates": "Census results are published only in the form of statistical tables and demographic aggregates at village, ward, district, state, and national levels."
+  },
+  "censusSaathiZeroPIIPrinciples": [
+    {
+      "badge": "No Real Aadhaar",
+      "title": "We Never Ask For Or Store Aadhaar Numbers",
+      "description": "Census Saathi explicitly prohibits entering real 12-digit Aadhaar numbers or uploading any identity documents. All practice tools use clearly masked placeholders."
+    },
+    {
+      "badge": "No Response Persistence",
+      "title": "We Do Not Collect Real Census Questionnaires",
+      "description": "Practice forms exist strictly in browser session memory to help you learn the format. Nothing is saved to remote databases."
+    },
+    {
+      "badge": "No Personal Tracking",
+      "title": "No Account Required & Minimal Session Storage",
+      "description": "You do not need to create an account, log in, or provide your phone number, email, or physical home address."
+    },
+    {
+      "badge": "Client-Side Safety",
+      "title": "Server-Side PII Redaction Guardrails",
+      "description": "Any AI query submitted is scrubbed server-side to strip accidental phone numbers or numerical identifiers before processing."
+    }
+  ],
+  "scamWarningSignals": [
+    {
+      "signal": "Payment Demands",
+      "detail": "Any request for ₹50, ₹100, ₹500 or any processing charge is 100% fraudulent. Census participation is completely free."
+    },
+    {
+      "signal": "Bank OTP / Passwords",
+      "detail": "No legitimate Census system or enumerator will ever ask for banking passwords, UPI PINs, or bank OTPs."
+    },
+    {
+      "signal": "Unofficial APKs or Links",
+      "detail": "Never install APK files sent via WhatsApp or Telegram claiming to be the Census app. Use only official Play Store links or gov.in portals."
+    },
+    {
+      "signal": "Document Confiscation",
+      "detail": "Enumerators only record information; they never collect physical property deeds, passports, or original certificates."
+    }
+  ],
+  "whatSaathiDoesNotCollect": [
+    "Aadhaar numbers or biometric data",
+    "Passport, PAN card, or Voter ID copies",
+    "Real household addresses or geolocation",
+    "Banking, UPI, or financial credentials",
+    "Individual census response records",
+    "Persistent chat logs tied to your identity"
+  ]
+}

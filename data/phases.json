@@ -1,0 +1,55 @@
+{
+  "phases": [
+    {
+      "id": "phase1",
+      "number": "01",
+      "name": "Houselisting & Housing Census",
+      "shortName": "Phase I: Houselisting",
+      "purpose": "To create a systematic national inventory of all structures, houses, and living conditions, and to assess the standard of living of households across India.",
+      "timing": "Conducted typically 6 to 9 months prior to the population count (as per state notifications).",
+      "keyFocus": [
+        "Building material (roof, wall, floor)",
+        "Use of census house (residence, shop, workshop, school)",
+        "Condition of the house (good, livable, dilapidated)",
+        "Household size and number of dwelling rooms",
+        "Ownership status of the house (owned, rented, any other)",
+        "Major source of drinking water and location",
+        "Source of lighting (electricity, solar, kerosene, etc.)",
+        "Access to latrine and drainage connectivity",
+        "Availability of kitchen and type of cooking fuel (LPG, PNG, firewood)",
+        "Availability of assets (radio/transistor, television, internet access, computer/laptop, telephone/mobile, bicycle, scooter/motorcycle, car/jeep/van)"
+      ],
+      "questionsCount": 31,
+      "icon": "Home",
+      "color": "emerald"
+    },
+    {
+      "id": "phase2",
+      "number": "02",
+      "name": "Population Enumeration",
+      "shortName": "Phase II: Population Count",
+      "purpose": "To count every individual residing in India and collect demographic, social, cultural, and economic characteristics of each person.",
+      "timing": "Conducted nationwide during the designated enumeration window.",
+      "keyFocus": [
+        "Full name and relationship to head of household",
+        "Sex (Male, Female, Other) and Date of Birth / Age",
+        "Current marital status and age at marriage",
+        "Scheduled Caste (SC) / Scheduled Tribe (ST) status",
+        "Religion and Mother Tongue / Other languages known",
+        "Literacy status and highest educational attainment",
+        "Economic activity, category of work, and main/marginal worker status",
+        "Occupation, industry, and class of worker",
+        "Place of birth and place of last residence (migration origin & reason)",
+        "Duration of stay at current residence",
+        "Fertility indicators (for ever-married women: children surviving, children born alive)"
+      ],
+      "questionsCount": 29,
+      "icon": "Users",
+      "color": "orange"
+    }
+  ],
+  "selfEnumerationStep": {
+    "title": "Digital Self-Enumeration Window",
+    "description": "Before an enumerator visits your home, households can log in to the official Census India portal using their mobile number, complete the questionnaire online, and receive a Self-Enumeration Acknowledgment Number (SEAN). When the enumerator visits, you simply share your SEAN to quickly verify your household."
+  }
+}

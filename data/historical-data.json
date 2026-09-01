@@ -1,0 +1,43 @@
+{
+  "nationalTrends": [
+    { "year": "1951", "population": 361.1, "decadalGrowth": 13.3, "literacy": 18.3, "maleLiteracy": 27.2, "femaleLiteracy": 8.9, "sexRatio": 946, "urbanShare": 17.3, "density": 117 },
+    { "year": "1961", "population": 439.2, "decadalGrowth": 21.6, "literacy": 28.3, "maleLiteracy": 40.4, "femaleLiteracy": 15.4, "sexRatio": 941, "urbanShare": 18.0, "density": 142 },
+    { "year": "1971", "population": 548.2, "decadalGrowth": 24.8, "literacy": 34.5, "maleLiteracy": 46.0, "femaleLiteracy": 22.0, "sexRatio": 930, "urbanShare": 19.9, "density": 177 },
+    { "year": "1981", "population": 683.3, "decadalGrowth": 24.7, "literacy": 43.6, "maleLiteracy": 56.4, "femaleLiteracy": 29.8, "sexRatio": 934, "urbanShare": 23.3, "density": 216 },
+    { "year": "1991", "population": 846.4, "decadalGrowth": 23.9, "literacy": 52.2, "maleLiteracy": 64.1, "femaleLiteracy": 39.3, "sexRatio": 927, "urbanShare": 25.7, "density": 267 },
+    { "year": "2001", "population": 1028.7, "decadalGrowth": 21.5, "literacy": 64.8, "maleLiteracy": 75.3, "femaleLiteracy": 53.7, "sexRatio": 933, "urbanShare": 27.8, "density": 325 },
+    { "year": "2011", "population": 1210.9, "decadalGrowth": 17.7, "literacy": 74.0, "maleLiteracy": 82.1, "femaleLiteracy": 65.5, "sexRatio": 943, "urbanShare": 31.2, "density": 382 }
+  ],
+  "indicators": [
+    { "metric": "Literacy Rate (%)", "rural2011": 67.8, "urban2011": 84.1, "total2011": 74.0, "changeSince2001": "+9.2%" },
+    { "metric": "Worker Participation Rate (%)", "rural2011": 41.8, "urban2011": 35.3, "total2011": 39.8, "changeSince2001": "+0.7%" },
+    { "metric": "Sex Ratio (Females per 1000 Males)", "rural2011": 949, "urban2011": 929, "total2011": 943, "changeSince2001": "+10 points" },
+    { "metric": "Child Sex Ratio (0-6 Years)", "rural2011": 923, "urban2011": 905, "total2011": 918, "changeSince2001": "-9 points" },
+    { "metric": "Electrified Households (%)", "rural2011": 55.3, "urban2011": 92.7, "total2011": 67.3, "changeSince2001": "+11.5%" },
+    { "metric": "Tap Water Access (%)", "rural2011": 30.8, "urban2011": 70.6, "total2011": 43.5, "changeSince2001": "+6.8%" }
+  ],
+  "topStatesByMetric": {
+    "highestLiteracy": [
+      { "state": "Kerala", "value": "94.0%" },
+      { "state": "Lakshadweep (UT)", "value": "91.8%" },
+      { "state": "Mizoram", "value": "91.3%" },
+      { "state": "Goa", "value": "88.7%" },
+      { "state": "Tripura", "value": "87.2%" }
+    ],
+    "highestSexRatio": [
+      { "state": "Kerala", "value": 1084 },
+      { "state": "Puducherry (UT)", "value": 1037 },
+      { "state": "Tamil Nadu", "value": 996 },
+      { "state": "Andhra Pradesh", "value": 993 },
+      { "state": "Chhattisgarh", "value": 991 }
+    ],
+    "highestUrbanShare": [
+      { "state": "Delhi (NCT)", "value": "97.5%" },
+      { "state": "Chandigarh (UT)", "value": "97.3%" },
+      { "state": "Lakshadweep (UT)", "value": "78.0%" },
+      { "state": "Goa", "value": "62.2%" },
+      { "state": "Mizoram", "value": "52.1%" }
+    ]
+  },
+  "sourceNote": "Official Census of India Historical Tables (1951-2011), Office of the Registrar General & Census Commissioner, India."
+}

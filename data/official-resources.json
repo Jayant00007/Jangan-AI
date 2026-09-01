@@ -1,0 +1,46 @@
+{
+  "title": "Verified Official Census Resources",
+  "disclaimer": "All links below redirect exclusively to verified official Government of India web domains (.gov.in / .nic.in).",
+  "resources": [
+    {
+      "name": "Office of the Registrar General & Census Commissioner, India (ORGI)",
+      "url": "https://censusindia.gov.in/",
+      "domain": "censusindia.gov.in",
+      "description": "Primary authoritative portal for all Census notifications, circulars, digital self-enumeration portal links, and official metadata.",
+      "category": "Official Portal",
+      "isOfficial": true
+    },
+    {
+      "name": "Ministry of Home Affairs, Government of India (MHA)",
+      "url": "https://www.mha.gov.in/",
+      "domain": "mha.gov.in",
+      "description": "Nodal ministry responsible for administrative notifications, legal amendments, and statutory orders regarding the Census of India.",
+      "category": "Ministry Portal",
+      "isOfficial": true
+    },
+    {
+      "name": "Open Government Data (OGD) Platform India",
+      "url": "https://data.gov.in/",
+      "domain": "data.gov.in",
+      "description": "Public repository of historical Census data tables, demographic datasets, and district-level statistical extracts.",
+      "category": "Open Data",
+      "isOfficial": true
+    },
+    {
+      "name": "Press Information Bureau (PIB) Fact Check Unit",
+      "url": "https://factcheck.pib.gov.in/",
+      "domain": "factcheck.pib.gov.in",
+      "description": "Official fact-checking body of the Government of India for verifying viral messages, rumors, and notifications regarding national programs.",
+      "category": "Fact Checking",
+      "isOfficial": true
+    },
+    {
+      "name": "National Cyber Crime Reporting Portal",
+      "url": "https://cybercrime.gov.in/",
+      "domain": "cybercrime.gov.in",
+      "description": "Helpline 1930 and official portal to report cyber fraud, fake phishing websites, or impersonation scams related to public surveys.",
+      "category": "Safety Helpline",
+      "isOfficial": true
+    }
+  ]
+}

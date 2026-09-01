@@ -1,0 +1,109 @@
+{
+  "rumours": [
+    {
+      "id": "rumour1",
+      "claim": "You must pay ₹500 fee and share an OTP to register for Census 2027 online.",
+      "keywords": ["fee", "pay", "charge", "500", "otp", "money", "cost", "payment"],
+      "status": "false",
+      "confidence": "high",
+      "threatLevel": "critical",
+      "summary": "Completely FALSE and a Dangerous Financial Scam.",
+      "explanation": "Census of India participation—both online self-enumeration and field enumeration—is 100% FREE. The government never charges any citizen for census enumeration, nor does it request bank OTPs, UPI PINs, or card details. Any website or message requesting payment is phishing fraud.",
+      "recommendedAction": "Do NOT pay any money, do not enter OTPs, and immediately report such phishing links to cybercrime.gov.in or helpline 1930.",
+      "sources": [
+        "Office of the Registrar General & Census Commissioner, India (censusindia.gov.in)",
+        "Press Information Bureau (PIB) Fact Check Alert"
+      ]
+    },
+    {
+      "id": "rumour2",
+      "claim": "Aadhaar card is compulsory and must be handed over to the Census enumerator.",
+      "keywords": ["aadhaar", "mandatory", "compulsory", "card", "handover", "document", "uidai"],
+      "status": "false",
+      "confidence": "high",
+      "threatLevel": "medium",
+      "summary": "FALSE — Aadhaar is NOT mandatory for Census 2027.",
+      "explanation": "The Census is a demographic count of all residents in India under the Census Act, 1948. Providing an Aadhaar number is voluntary, and enumerators have no authority to demand physical custody of your identity documents or deny enumeration if Aadhaar is omitted.",
+      "recommendedAction": "Answer questions verbally or verify through self-enumeration. You are not required to surrender physical documents.",
+      "sources": [
+        "Census Act, 1948 Guidelines",
+        "Official Census India Circulars on Identity Documents"
+      ]
+    },
+    {
+      "id": "rumour3",
+      "claim": "Census officials can ask for bank account PINs or Net Banking passwords.",
+      "keywords": ["bank", "pin", "password", "net banking", "atm", "account number"],
+      "status": "false",
+      "confidence": "high",
+      "threatLevel": "critical",
+      "summary": "Completely FALSE — Illegal scam attempt.",
+      "explanation": "No Census question asks for bank account passwords, UPI PINs, CVVs, or internet banking credentials. Houselisting questions only inquire about whether the household has access to banking services (Yes/No), never account specifics.",
+      "recommendedAction": "Never disclose financial credentials. File an immediate complaint on the National Cyber Crime Reporting Portal.",
+      "sources": [
+        "Reserve Bank of India (RBI) Cyber Safety Notice",
+        "Ministry of Home Affairs Public Advisory"
+      ]
+    },
+    {
+      "id": "rumour4",
+      "claim": "Self-enumeration allows households to fill census data online before enumerator visits.",
+      "keywords": ["self enumeration", "online", "portal", "before visit", "digital", "sean", "fill online"],
+      "status": "verified",
+      "confidence": "high",
+      "threatLevel": "low",
+      "summary": "VERIFIED — Official digital feature for Census 2027.",
+      "explanation": "The Ministry of Home Affairs and ORGI have officially introduced digital self-enumeration for Census 2027. Households can log in to the official Census portal (censusindia.gov.in) with an authenticated mobile number during the designated window, fill the form, and present the generated Self-Enumeration Acknowledgment Number (SEAN) to the visiting enumerator.",
+      "recommendedAction": "Use only the official website (censusindia.gov.in) when the self-enumeration window is officially announced.",
+      "sources": [
+        "ORGI Digital Census Notification",
+        "Ministry of Home Affairs (MHA) Annual Report"
+      ]
+    },
+    {
+      "id": "rumour5",
+      "claim": "Census answers will be shared with the Income Tax department to catch tax evaders.",
+      "keywords": ["income tax", "tax", "police", "court", "evidence", "share data"],
+      "status": "false",
+      "confidence": "high",
+      "threatLevel": "high",
+      "summary": "FALSE — Strict legal statutory confidentiality applies.",
+      "explanation": "Under Section 15 of the Census Act, 1948, all individual census schedules are strictly confidential. They cannot be accessed by Income Tax authorities, police, or produced as evidence in any court of law.",
+      "recommendedAction": "Provide accurate responses without fear of administrative or taxation scrutiny.",
+      "sources": [
+        "The Census Act, 1948 (Section 15)",
+        "Supreme Court of India interpretations on Census confidentiality"
+      ]
+    },
+    {
+      "id": "rumour6",
+      "claim": "Download the Census 2027 APK from WhatsApp to verify your family.",
+      "keywords": ["apk", "download", "whatsapp link", "app link", "install", "telegram"],
+      "status": "false",
+      "confidence": "high",
+      "threatLevel": "critical",
+      "summary": "CRITICAL THREAT — Malicious Phishing / Malware APK.",
+      "explanation": "The government never distributes official Census applications via third-party WhatsApp links or untrusted APK downloads. Such files often contain spyware or financial Trojans.",
+      "recommendedAction": "Never download or install APK files received via social messaging apps. Access official resources only on Google Play Store or censusindia.gov.in.",
+      "sources": [
+        "CERT-In (Indian Computer Emergency Response Team) Advisory",
+        "Cyber Dost MHA Safety Bulletin"
+      ]
+    },
+    {
+      "id": "rumour7",
+      "claim": "Failure to complete digital self-enumeration will attract a ₹10,000 fine.",
+      "keywords": ["fine", "penalty", "10000", "mandatory online", "compulsory online", "punishment"],
+      "status": "false",
+      "confidence": "high",
+      "threatLevel": "medium",
+      "summary": "FALSE — Self-enumeration is completely optional.",
+      "explanation": "Digital self-enumeration is an optional convenience. If a household chooses not to self-enumerate online, an enumerator will simply visit their home in person. There is no fine or penalty whatsoever for skipping online self-enumeration.",
+      "recommendedAction": "Choose self-enumeration if convenient, or wait for the authorized enumerator to visit your home.",
+      "sources": [
+        "ORGI Citizen Guidelines",
+        "Ministry of Home Affairs FAQ"
+      ]
+    }
+  ]
+}

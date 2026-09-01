@@ -1,0 +1,98 @@
+{
+  "categories": [
+    "Census Basics",
+    "Self Enumeration",
+    "Enumerator Visit",
+    "Privacy & Legal",
+    "Digital Mode",
+    "Dates & Schedule",
+    "Data & Statistics",
+    "Scam Prevention"
+  ],
+  "faqs": [
+    {
+      "id": "faq1",
+      "category": "Census Basics",
+      "question": "What is the Census and who conducts it in India?",
+      "answer": "The Census is a nationwide decennial count of all persons residing within the territory of India. It is conducted by the Office of the Registrar General & Census Commissioner, India (ORGI) under the Ministry of Home Affairs, Government of India, in accordance with the Census Act, 1948."
+    },
+    {
+      "id": "faq2",
+      "category": "Census Basics",
+      "question": "Is participating in the Census mandatory for all residents?",
+      "answer": "Yes. Under Section 10 of the Census Act, 1948, every citizen and resident is legally obligated to answer the census questions truthfully. In return, Section 15 of the Act legally guarantees that all individual answers remain strictly confidential."
+    },
+    {
+      "id": "faq3",
+      "category": "Self Enumeration",
+      "question": "What is digital self-enumeration and how will it work?",
+      "answer": "Digital self-enumeration allows households to fill out their Census questionnaire online through the official Census portal or mobile app during a designated window prior to field enumeration. Once submitted, an acknowledgment number (SEAN) is generated, which you share with the visiting enumerator for instant verification."
+    },
+    {
+      "id": "faq4",
+      "category": "Self Enumeration",
+      "question": "Does Census Saathi submit my Census responses to the government?",
+      "answer": "No. Census Saathi is an educational and preparation companion. It does not submit, record, or transmit official Census responses. Official submission must only be performed on the official government website (censusindia.gov.in) or mobile application."
+    },
+    {
+      "id": "faq5",
+      "category": "Enumerator Visit",
+      "question": "How can I verify a real Census enumerator when they visit?",
+      "answer": "Official Census enumerators carry a government-issued Photo Identity Card and an authorization letter from the local Census Charge Officer/District Collector. They will never ask for banking details, OTPs, processing fees, or document handovers."
+    },
+    {
+      "id": "faq6",
+      "category": "Enumerator Visit",
+      "question": "What if no one is at home when the enumerator visits?",
+      "answer": "Enumerators make multiple visits to ensure every household is enumerated. They may also leave a visiting card/notice with contact details and revisit at a mutually convenient time."
+    },
+    {
+      "id": "faq7",
+      "category": "Privacy & Legal",
+      "question": "Is Aadhaar mandatory to be provided for Census 2027?",
+      "answer": "No. Aadhaar is not legally mandatory for Census participation. The Census of India collects demographic and socio-economic information. You are never forced to share your Aadhaar number to be counted."
+    },
+    {
+      "id": "faq8",
+      "category": "Privacy & Legal",
+      "question": "Can Census data be shared with the police, tax authorities, or courts?",
+      "answer": "No. Under Section 15 of the Census Act, 1948, individual census records are confidential and inadmissible as evidence in any court of law. Neither tax authorities, police, nor any third party can access individual census questionnaires."
+    },
+    {
+      "id": "faq9",
+      "category": "Privacy & Legal",
+      "question": "How does Census Saathi protect my privacy?",
+      "answer": "Census Saathi follows strict data minimization. It does not require login, does not store personal data, does not collect Aadhaar or ID documents, and does not record real Census responses. All practice simulations run strictly on your device."
+    },
+    {
+      "id": "faq10",
+      "category": "Digital Mode",
+      "question": "What if I do not have a smartphone or internet connection for self-enumeration?",
+      "answer": "Digital self-enumeration is entirely optional. If you do not self-enumerate online, an authorized government enumerator will visit your residence and record your household information using their secure official tablet or mobile app."
+    },
+    {
+      "id": "faq11",
+      "category": "Dates & Schedule",
+      "question": "Where can I find the official Census dates for my state?",
+      "answer": "Official notifications regarding state-specific schedules and self-enumeration windows will be gazetted by the Ministry of Home Affairs and published on censusindia.gov.in. Census Saathi displays verified schedules only when officially gazetted."
+    },
+    {
+      "id": "faq12",
+      "category": "Scam Prevention",
+      "question": "Is there any fee or charge to fill the Census form or self-enumerate?",
+      "answer": "No! Census participation is 100% free of cost. Any website, message, or person asking for a fee, processing charge, payment, or OTP is fraudulent. Never share financial details."
+    },
+    {
+      "id": "faq13",
+      "category": "Scam Prevention",
+      "question": "What should I do if I receive a suspicious WhatsApp link claiming to be Census registration?",
+      "answer": "Do not click unverified links or download APK files. Paste the claim into the Census Saathi Fact Checker to analyze scam signals, and verify announcements only on the official government website censusindia.gov.in."
+    },
+    {
+      "id": "faq14",
+      "category": "Data & Statistics",
+      "question": "What historical Census data is available to explore in this app?",
+      "answer": "Census Saathi includes verified historical datasets from Census 1951 through 2011, covering national and state-level population growth, literacy rate trends, urbanization, sex ratios, and rural vs urban comparisons."
+    }
+  ]
+}

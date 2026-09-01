@@ -1,0 +1,39 @@
+{
+  "title": "Census of India 2027 Overview",
+  "tagline": "Your intelligent civic companion for Census 2027",
+  "whatIsCensus": "The Census of India is the largest administrative and statistical exercise in the world. Conducted under the Census Act, 1948, it counts every resident in India and gathers vital social, economic, and demographic data that shapes national policy, electoral delimitation, resource distribution, and infrastructure planning.",
+  "whyItMatters": [
+    {
+      "title": "Policy & Resource Allocation",
+      "description": "Government schemes, healthcare facilities, schools, roads, and subsidies are planned using granular Census data at village, town, and district levels."
+    },
+    {
+      "title": "Electoral Representation",
+      "description": "Delimitation and allocation of parliamentary and legislative constituencies are anchored in Census population figures."
+    },
+    {
+      "title": "Inclusive Development",
+      "description": "Helps identify underserved communities, demographic shifts, literacy gaps, and migration patterns to deliver targeted welfare."
+    }
+  ],
+  "digitalCensus2027Innovations": [
+    {
+      "title": "Digital Self-Enumeration",
+      "description": "For the first time in Indian Census history, citizens will have the option to fill out Census questionnaires online for their household before field enumerators visit."
+    },
+    {
+      "title": "Mobile App Field Enumeration",
+      "description": "Enumerators will collect and upload household responses directly through secured, government-authorized mobile applications, eliminating paper delays."
+    },
+    {
+      "title": "Census Management & Monitoring Portal (CMMS)",
+      "description": "Real-time tracking of enumeration coverage, geo-referencing, and data validation across all 36 States and Union Territories."
+    }
+  ],
+  "legalFramework": {
+    "act": "The Census Act, 1948 (Act No. 37 of 1948)",
+    "confidentialitySection": "Section 15 of the Census Act guarantees that all individual census records are strictly confidential and cannot be produced as evidence in any court of law or accessed by tax, police, or investigative authorities.",
+    "distinctionFromOtherRegisters": "The Census is a statistical demographic count of all persons residing in India at the time of enumeration. It is distinct from citizen registries, and participation is a civic duty protected by statutory confidentiality."
+  },
+  "officialAuthority": "Office of the Registrar General & Census Commissioner, India (ORGI), Ministry of Home Affairs, Government of India"
+}
