@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Census Saathi — Your Census 2027 Companion',
-  description: 'A privacy-first multilingual guide and preparation prototype for India\'s Census 2027.',
+  title: 'Jan Gan AI — Your Census 2027 Companion',
+  description:
+    "Jan Gan AI is a privacy-first multilingual guide and preparation prototype for India's Census 2027.",
 };
 
 export default function RootLayout({
