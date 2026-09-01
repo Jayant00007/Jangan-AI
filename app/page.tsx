@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowRight,
   BarChart3,
@@ -139,8 +139,12 @@ function Logo() {
   );
 }
 
-export default function Home() {
-  const [entered, setEntered] = useState(false);
+export function Experience({
+  startEntered = false,
+}: {
+  startEntered?: boolean;
+}) {
+  const [entered] = useState(startEntered);
   const [state, setState] = useState('Maharashtra');
   const [language, setLanguage] = useState('English');
   const [mobile, setMobile] = useState(false);
@@ -152,6 +156,21 @@ export default function Home() {
   const [fact, setFact] = useState('');
   const [factResult, setFactResult] = useState('');
   const [chartMode, setChartMode] = useState<'trend' | 'compare'>('trend');
+  const [demoAddress, setDemoAddress] = useState({
+    house: '',
+    locality: '',
+    pin: '',
+  });
+  const [practiceSubmitted, setPracticeSubmitted] = useState(false);
+  const [practiceError, setPracticeError] = useState('');
+  useEffect(() => {
+    if (!startEntered) return;
+    const savedState = sessionStorage.getItem('jan-gan-state');
+    const savedLanguage = sessionStorage.getItem('jan-gan-language');
+    if (savedState && states.includes(savedState)) setState(savedState);
+    if (savedLanguage && languages.includes(savedLanguage))
+      setLanguage(savedLanguage);
+  }, [startEntered]);
   const greeting = useMemo(
     () =>
       language.includes('Hindi')
@@ -195,87 +214,98 @@ export default function Home() {
     );
   };
 
-  if (!entered) return (
-    <main id="top" className="min-h-screen overflow-y-auto bg-background text-foreground">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-10">
-        <Logo />
-        <div className="flex items-center gap-2 rounded-full border border-emerald-900/10 bg-white/70 px-3 py-2 text-xs font-medium text-emerald-950 shadow-sm">
-          <ShieldCheck className="size-4 text-emerald-700" />
-          Privacy-first prototype
-        </div>
-      </nav>
-      <section className="relative mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-14 px-5 pb-16 pt-8 md:grid-cols-[1.08fr_.92fr] md:px-10 md:pt-0">
-        <div className="relative z-10 max-w-2xl">
-          <div className="eyebrow">
-            <Sparkles />
-            Your civic AI companion
+  if (!entered)
+    return (
+      <main
+        id="top"
+        className="min-h-screen overflow-y-auto bg-background text-foreground"
+      >
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-10">
+          <Logo />
+          <div className="flex items-center gap-2 rounded-full border border-emerald-900/10 bg-white/70 px-3 py-2 text-xs font-medium text-emerald-950 shadow-sm">
+            <ShieldCheck className="size-4 text-emerald-700" />
+            Privacy-first prototype
           </div>
-          <h1 className="display">
-            Jan Gan AI.
-            <br />
-            <span>Every story counts.</span>
-          </h1>
-          <p className="mt-7 max-w-xl text-balance text-lg leading-8 text-slate-600">
-            Understand Census 2027, prepare with confidence, and explore the
-            story of India—all in your language.
-          </p>
-          <div className="mt-9 grid max-w-xl gap-3 sm:grid-cols-2">
-            <Picker
-              icon={<Languages />}
-              label="Language"
-              value={language}
-              onChange={setLanguage}
-              options={languages}
-            />
-            <Picker
-              icon={<MapPin />}
-              label="Your state"
-              value={state}
-              onChange={setState}
-              options={states}
-            />
+        </nav>
+        <section className="relative mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-14 px-5 pb-16 pt-8 md:grid-cols-[1.08fr_.92fr] md:px-10 md:pt-0">
+          <div className="relative z-10 max-w-2xl">
+            <div className="eyebrow">
+              <Sparkles />
+              Your civic AI companion
+            </div>
+            <h1 className="display">
+              Jan Gan AI.
+              <br />
+              <span>Every story counts.</span>
+            </h1>
+            <p className="mt-7 max-w-xl text-balance text-lg leading-8 text-slate-600">
+              Understand Census 2027, prepare with confidence, and explore the
+              story of India—all in your language.
+            </p>
+            <div className="mt-9 grid max-w-xl gap-3 sm:grid-cols-2">
+              <Picker
+                icon={<Languages />}
+                label="Language"
+                value={language}
+                onChange={setLanguage}
+                options={languages}
+              />
+              <Picker
+                icon={<MapPin />}
+                label="Your state"
+                value={state}
+                onChange={setState}
+                options={states}
+              />
+            </div>
+            <button
+              onClick={() => {
+                sessionStorage.setItem('jan-gan-state', state);
+                sessionStorage.setItem('jan-gan-language', language);
+                window.location.assign('/dashboard');
+              }}
+              className="primary mt-4"
+            >
+              Enter Jan Gan AI <ArrowRight />
+            </button>
+            <p className="mt-4 max-w-lg text-xs leading-5 text-slate-500">
+              No account needed. Choices are kept only for this session. This
+              demo never asks for Aadhaar or real identity documents.
+            </p>
           </div>
-          <button onClick={() => setEntered(true)} className="primary mt-4">
-            Enter Jan Gan AI <ArrowRight />
-          </button>
-          <p className="mt-4 max-w-lg text-xs leading-5 text-slate-500">
-            No account needed. Choices are kept only for this session. This demo
-            never asks for Aadhaar or real identity documents.
-          </p>
-        </div>
-        <div className="relative mx-auto w-full max-w-lg" aria-hidden="true">
-          <div className="glow" />
-          <div className="preview-card">
-            <div className="rounded-[1.4rem] bg-emerald-950 p-6 text-white">
-              <div className="flex justify-between text-xs text-emerald-200">
-                <span>YOUR CENSUS JOURNEY</span>
-                <span>{state}</span>
+          <div className="relative mx-auto w-full max-w-lg" aria-hidden="true">
+            <div className="glow" />
+            <div className="preview-card">
+              <div className="rounded-[1.4rem] bg-emerald-950 p-6 text-white">
+                <div className="flex justify-between text-xs text-emerald-200">
+                  <span>YOUR CENSUS JOURNEY</span>
+                  <span>{state}</span>
+                </div>
+                <p className="mt-8 text-3xl font-semibold tracking-tight">
+                  Ready, one step at a time.
+                </p>
+                <div className="mt-8 h-2 overflow-hidden rounded-full bg-white/15">
+                  <div className="h-full w-[42%] rounded-full bg-orange-400" />
+                </div>
+                <div className="mt-4 flex justify-between text-xs">
+                  <span>Learn</span>
+                  <span>Prepare</span>
+                  <span className="text-white/45">Official portal</span>
+                </div>
               </div>
-              <p className="mt-8 text-3xl font-semibold tracking-tight">
-                Ready, one step at a time.
-              </p>
-              <div className="mt-8 h-2 overflow-hidden rounded-full bg-white/15">
-                <div className="h-full w-[42%] rounded-full bg-orange-400" />
-              </div>
-              <div className="mt-4 flex justify-between text-xs">
-                <span>Learn</span>
-                <span>Prepare</span>
-                <span className="text-white/45">Official portal</span>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <Mini tone="orange" title="NEXT FOR YOU">
+                  Try the 3-minute preparation check
+                </Mini>
+                <Mini tone="green" title="SAFETY STATUS">
+                  No sensitive data requested
+                </Mini>
               </div>
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-4">
-              <Mini tone="orange" title="NEXT FOR YOU">
-                Try the 3-minute preparation check
-              </Mini>
-              <Mini tone="green" title="SAFETY STATUS">
-                No sensitive data requested
-              </Mini>
-            </div>
           </div>
-        </div>
-      </section>
-    </main>
-  );
+        </section>
+      </main>
+    );
 
   return (
     <div id="top" className="min-h-screen bg-[#f7f7f1] text-slate-900">
@@ -508,16 +538,65 @@ export default function Home() {
               )}
               {prep === 1 && (
                 <DemoStep
-                  title="Recognize the address format"
-                  text="Real addresses are never requested here."
+                  title="Try the demo address form"
+                  text="Use fictional information only. These local practice fields are cleared when you close the page."
                 >
-                  <div className="mock-field">
-                    <span>MASKED DEMO ADDRESS</span>
-                    <strong>Flat ••, Demo Nagar, Pune 411•••</strong>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="demo-input">
+                      <span>DEMO HOUSE / FLAT</span>
+                      <input
+                        value={demoAddress.house}
+                        maxLength={40}
+                        placeholder="Example: Flat 12-A"
+                        onChange={(e) =>
+                          setDemoAddress({
+                            ...demoAddress,
+                            house: safeInput(e.target.value),
+                          })
+                        }
+                      />
+                    </label>
+                    <label className="demo-input">
+                      <span>FICTIONAL LOCALITY</span>
+                      <input
+                        value={demoAddress.locality}
+                        maxLength={50}
+                        placeholder="Example: Demo Nagar, Pune"
+                        onChange={(e) =>
+                          setDemoAddress({
+                            ...demoAddress,
+                            locality: safeInput(e.target.value),
+                          })
+                        }
+                      />
+                    </label>
+                    <label className="demo-input sm:col-span-2">
+                      <span>DEMO 6-DIGIT PIN</span>
+                      <input
+                        inputMode="numeric"
+                        value={demoAddress.pin}
+                        maxLength={6}
+                        placeholder="411001"
+                        onChange={(e) =>
+                          setDemoAddress({
+                            ...demoAddress,
+                            pin: e.target.value.replace(/\D/g, '').slice(0, 6),
+                          })
+                        }
+                      />
+                    </label>
                   </div>
+                  {practiceError && (
+                    <p
+                      role="alert"
+                      className="mt-3 text-sm font-semibold text-red-600"
+                    >
+                      {practiceError}
+                    </p>
+                  )}
                   <DemoNote>
-                    Keep house number, street, locality, district, state, and
-                    PIN ready only for the authorized official process.
+                    Do not enter your real home address. This is only a format
+                    demonstration and is never sent anywhere.
                   </DemoNote>
                 </DemoStep>
               )}
@@ -533,9 +612,30 @@ export default function Home() {
                     </CheckRow>
                     <CheckRow>You can review before continuing</CheckRow>
                   </div>
-                  <DemoNote>
-                    This button completes only the practice. It submits nothing.
-                  </DemoNote>
+                  {practiceSubmitted ? (
+                    <div
+                      role="status"
+                      className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-5"
+                    >
+                      <div className="flex items-center gap-3 font-semibold text-emerald-900">
+                        <CircleCheck /> Practice submitted successfully
+                      </div>
+                      <p className="mt-2 text-sm text-slate-600">
+                        Demo acknowledgement:{' '}
+                        <strong>
+                          DEMO-2027-{state.slice(0, 2).toUpperCase()}-4821
+                        </strong>
+                      </p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        No census response or address was sent.
+                      </p>
+                    </div>
+                  ) : (
+                    <DemoNote>
+                      This submits only the local practice exercise. It is not a
+                      Census 2027 submission.
+                    </DemoNote>
+                  )}
                 </DemoStep>
               )}
               <div className="mt-8 flex gap-3">
@@ -547,11 +647,58 @@ export default function Home() {
                   Back
                 </button>
                 <button
-                  onClick={() => setPrep(Math.min(2, prep + 1))}
+                  onClick={() => {
+                    if (
+                      prep === 1 &&
+                      (!demoAddress.house.trim() ||
+                        !demoAddress.locality.trim() ||
+                        !/^\d{6}$/.test(demoAddress.pin))
+                    ) {
+                      setPracticeError(
+                        'Complete all fictional demo fields and enter a 6-digit demo PIN.',
+                      );
+                      return;
+                    }
+                    setPracticeError('');
+                    if (prep === 2) {
+                      setPracticeSubmitted(true);
+                      return;
+                    }
+                    setPrep(Math.min(2, prep + 1));
+                  }}
                   className="primary"
                 >
-                  {prep === 2 ? 'Practice complete' : 'Continue'} <ArrowRight />
+                  {prep === 2
+                    ? practiceSubmitted
+                      ? 'Submitted'
+                      : 'Submit practice'
+                    : 'Continue'}{' '}
+                  <ArrowRight />
                 </button>
+              </div>
+            </div>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              <div className="rounded-2xl bg-emerald-900 p-6">
+                <p className="kicker text-orange-300">SETTLEMENT</p>
+                <strong className="mt-3 block text-3xl">68.8% rural</strong>
+                <p className="mt-2 text-sm text-emerald-100">
+                  31.2% of India’s population lived in urban areas in 2011.
+                </p>
+              </div>
+              <div className="rounded-2xl bg-emerald-900 p-6">
+                <p className="kicker text-orange-300">LITERACY GAP</p>
+                <strong className="mt-3 block text-3xl">16.7 points</strong>
+                <p className="mt-2 text-sm text-emerald-100">
+                  Difference between male and female literacy rates in Census
+                  2011.
+                </p>
+              </div>
+              <div className="rounded-2xl bg-emerald-900 p-6">
+                <p className="kicker text-orange-300">CHILD POPULATION</p>
+                <strong className="mt-3 block text-3xl">158.8 million</strong>
+                <p className="mt-2 text-sm text-emerald-100">
+                  Children aged 0–6 counted in Census 2011.
+                </p>
               </div>
             </div>
           </div>
@@ -571,6 +718,28 @@ export default function Home() {
                 Values are rounded for this educational prototype.
               </p>
             </div>
+            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+              {[
+                ['1.21B', 'Population'],
+                ['74.0%', 'Literacy'],
+                ['31.2%', 'Urban share'],
+                ['943', 'Women / 1,000 men'],
+                ['17.7%', 'Decadal growth'],
+                ['382', 'People / km²'],
+              ].map(([value, label]) => (
+                <div
+                  key={label}
+                  className="rounded-2xl border border-white/10 bg-white/10 p-5"
+                >
+                  <strong className="text-2xl text-orange-300">{value}</strong>
+                  <p className="mt-2 text-xs text-emerald-100">{label}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-xs text-emerald-200">
+              India snapshot • Census 2011 • Values rounded for quick
+              understanding
+            </p>
             <div className="mt-10 rounded-[2rem] bg-white p-5 text-slate-900 md:p-8">
               <div className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
                 <div>
@@ -596,23 +765,53 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <div className="mt-8 min-h-80 min-w-0" aria-label="Historical census chart">
+              <div
+                className="mt-8 min-h-80 min-w-0"
+                aria-label="Historical census chart"
+              >
                 {chartMode === 'trend' ? (
-                  <div className="chart-bars" role="img" aria-label="India population grew from 361 million in 1951 to 1,211 million in 2011">
+                  <div
+                    className="chart-bars"
+                    role="img"
+                    aria-label="India population grew from 361 million in 1951 to 1,211 million in 2011"
+                  >
                     {trend.map((point) => (
                       <div className="chart-column" key={point.year}>
                         <span className="chart-value">{point.value}m</span>
-                        <span className="chart-bar orange" style={{ height: `${(point.value / 1211) * 100}%` }} />
+                        <span
+                          className="chart-bar orange"
+                          style={{ height: `${(point.value / 1211) * 100}%` }}
+                        />
                         <span className="chart-label">{point.year}</span>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="space-y-7 pt-4" role="img" aria-label="Rural and urban demographic comparison">
+                  <div
+                    className="space-y-7 pt-4"
+                    role="img"
+                    aria-label="Rural and urban demographic comparison"
+                  >
                     {compare.map((point) => (
                       <div key={point.name}>
-                        <div className="mb-2 flex justify-between text-sm font-semibold"><span>{point.name}</span><span className="text-slate-400">Rural / Urban</span></div>
-                        <div className="grid gap-2"><span className="compare-bar rural" style={{ width: `${Math.min(point.rural, 100)}%` }}>{point.rural}</span><span className="compare-bar urban" style={{ width: `${Math.min(point.urban, 100)}%` }}>{point.urban}</span></div>
+                        <div className="mb-2 flex justify-between text-sm font-semibold">
+                          <span>{point.name}</span>
+                          <span className="text-slate-400">Rural / Urban</span>
+                        </div>
+                        <div className="grid gap-2">
+                          <span
+                            className="compare-bar rural"
+                            style={{ width: `${Math.min(point.rural, 100)}%` }}
+                          >
+                            {point.rural}
+                          </span>
+                          <span
+                            className="compare-bar urban"
+                            style={{ width: `${Math.min(point.urban, 100)}%` }}
+                          >
+                            {point.urban}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -878,6 +1077,10 @@ export default function Home() {
       )}
     </div>
   );
+}
+
+export default function Home() {
+  return <Experience />;
 }
 
 function Picker({
