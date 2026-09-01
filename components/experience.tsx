@@ -25,7 +25,7 @@ import {
   X,
 } from 'lucide-react';
 
-const states = [
+export const states = [
   'Andaman and Nicobar Islands (UT)',
   'Andhra Pradesh',
   'Arunachal Pradesh',
@@ -63,7 +63,7 @@ const states = [
   'Uttarakhand',
   'West Bengal',
 ];
-const languages = [
+export const languages = [
   'English',
   'हिन्दी (Hindi)',
   'অসমীয়া (Assamese)',
@@ -144,7 +144,6 @@ export function Experience({
 }: {
   startEntered?: boolean;
 }) {
-  const [entered] = useState(startEntered);
   const [state, setState] = useState('Maharashtra');
   const [language, setLanguage] = useState('English');
   const [mobile, setMobile] = useState(false);
@@ -214,7 +213,7 @@ export function Experience({
     );
   };
 
-  if (!entered)
+  if (false)
     return (
       <main
         id="top"
