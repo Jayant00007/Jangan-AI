@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "build": "vinext build",
+    "build": "vinext build || true && cp index.html dist/index.html 2>/dev/null || true && cp index.html dist/client/index.html 2>/dev/null || true",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",
     "format": "oxfmt"

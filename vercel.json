@@ -1,5 +1,10 @@
 {
   "buildCommand": "pnpm run build",
-  "outputDirectory": "dist/client",
-  "framework": null
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
 }
