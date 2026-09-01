@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Census Saathi (जन गण साथी) — AI Companion for Census 2027</title>
   <meta name="description" content="Census Saathi is a privacy-first, secure, multilingual AI companion helping Indian citizens understand Census 2027, prepare for digital self-enumeration, verify rumours, and explore historical demographic data." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js CDN for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -25,7 +33,7 @@
               50: '#f2fbf6',
               100: '#e1f7eb',
               200: '#c5eed9',
-              500: '#10b981',
+              600: '#059669',
               700: '#047857',
               800: '#065f46',
               900: '#064e3b',
@@ -34,6 +42,7 @@
             saffron: {
               50: '#fff7ed',
               100: '#ffedd5',
+              200: '#fed7aa',
               500: '#f97316',
               600: '#ea580c',
               700: '#c2410c',
@@ -43,362 +52,904 @@
       }
     }
   </script>
+
   <style>
     body {
       background-color: #f7f7f1;
       color: #102a26;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    h1, h2, h3, h4, .font-display {
+    h1, h2, h3, h4, h5, h6, .font-display {
       font-family: 'Outfit', sans-serif;
     }
     .civic-glow {
-      background: radial-gradient(circle at 50% 50%, rgba(234, 88, 12, 0.12) 0%, rgba(6, 78, 59, 0.05) 50%, transparent 80%);
+      background: radial-gradient(circle at 50% 30%, rgba(234, 88, 12, 0.09) 0%, rgba(6, 78, 59, 0.05) 50%, transparent 75%);
+    }
+    .card-glass {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(6, 78, 59, 0.1);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-orange-200 selection:text-emerald-950">
-  <!-- Top Civic Navigation -->
-  <header class="border-b border-emerald-900/10 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="showLandingView()">
-        <div class="grid size-11 place-items-center rounded-2xl bg-emerald-900 text-white shadow-md shadow-emerald-950/20 font-bold text-lg font-display">
+
+  <!-- ========================================================
+       TOP STICKY HEADER & CIVIC CONTROLS
+  ======================================================== -->
+  <header class="sticky top-0 z-40 border-b border-emerald-950/10 bg-[#f7f7f1]/95 backdrop-blur-md transition-all">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <!-- Logo & Branding -->
+      <a href="#journey" class="flex items-center gap-3 group">
+        <div class="grid size-11 place-items-center rounded-2xl bg-emerald-900 text-white shadow-md shadow-emerald-950/20 font-bold text-lg font-display transition group-hover:scale-105">
           जन
         </div>
         <div>
           <span class="block text-lg font-bold tracking-tight text-emerald-950 font-display">Census Saathi</span>
-          <span class="block text-[11px] font-semibold text-orange-700">जन गण साथी • Census 2027 Companion</span>
+          <span class="block text-[10px] font-bold uppercase tracking-wider text-orange-700">जन गण साथी • Census 2027</span>
         </div>
-      </div>
+      </a>
 
-      <div class="flex items-center gap-3">
-        <div class="hidden sm:flex items-center gap-2 rounded-full border border-emerald-900/15 bg-emerald-50/60 px-3.5 py-1.5 text-xs font-medium text-emerald-950">
-          <i data-lucide="shield-check" class="size-4 text-emerald-700"></i>
-          <span>Privacy-first • Zero Aadhaar Collected</span>
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center gap-5 text-xs font-semibold text-slate-700">
+        <a href="#journey" class="hover:text-emerald-900 transition">Journey</a>
+        <a href="#understand" class="hover:text-emerald-900 transition">Phases</a>
+        <a href="#timeline" class="hover:text-emerald-900 transition">Timeline</a>
+        <a href="#prepare" class="hover:text-emerald-900 transition">Self-Enumerate</a>
+        <a href="#explore" class="hover:text-emerald-900 transition">1951-2011 Data</a>
+        <a href="#factcheck" class="hover:text-emerald-900 transition">Rumour Buster</a>
+        <a href="#safety" class="hover:text-emerald-900 transition">Privacy</a>
+        <a href="#faqs" class="hover:text-emerald-900 transition">FAQs</a>
+      </nav>
+
+      <!-- Language + State Selector + Ask AI Trigger -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Select -->
+        <div class="flex items-center gap-1.5 rounded-xl border border-emerald-900/15 bg-white px-2.5 py-1.5 text-xs font-semibold text-emerald-950 shadow-sm">
+          <i data-lucide="languages" class="size-3.5 text-emerald-700"></i>
+          <select id="globalLang" onchange="onLangChange(this.value)" class="bg-transparent font-semibold outline-none cursor-pointer">
+            <option value="English">English</option>
+            <option value="Hindi">हिन्दी (Hindi)</option>
+            <option value="Marathi">मराठी (Marathi)</option>
+            <option value="Bengali">বাংলা (Bengali)</option>
+            <option value="Telugu">తెలుగు (Telugu)</option>
+            <option value="Tamil">தமிழ் (Tamil)</option>
+            <option value="Gujarati">ગુજરાતી (Gujarati)</option>
+            <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
+            <option value="Malayalam">മലയാളം (Malayalam)</option>
+            <option value="Punjabi">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="Odia">ଓଡ଼ିଆ (Odia)</option>
+            <option value="Assamese">অসমীয়া (Assamese)</option>
+            <option value="Urdu">اردو (Urdu)</option>
+            <option value="Sanskrit">संस्कृतम् (Sanskrit)</option>
+          </select>
         </div>
-        <button id="navDashboardBtn" onclick="toggleView()" class="inline-flex items-center gap-2 rounded-xl bg-emerald-900 px-4 py-2 text-xs font-semibold text-white shadow-md hover:bg-emerald-800 transition">
-          <span id="navBtnText">Open Dashboard</span>
-          <i data-lucide="arrow-right" class="size-3.5"></i>
+
+        <!-- State Select -->
+        <div class="hidden sm:flex items-center gap-1.5 rounded-xl border border-emerald-900/15 bg-white px-2.5 py-1.5 text-xs font-semibold text-emerald-950 shadow-sm">
+          <i data-lucide="map-pin" class="size-3.5 text-emerald-700"></i>
+          <select id="globalState" onchange="onStateChange(this.value)" class="max-w-[130px] truncate bg-transparent font-semibold outline-none cursor-pointer">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <!-- Copilot Button -->
+        <button onclick="toggleAiDrawer(true)" class="inline-flex items-center gap-2 rounded-xl bg-emerald-900 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md hover:bg-emerald-800 transition">
+          <i data-lucide="bot" class="size-4 text-orange-400"></i>
+          <span class="hidden sm:inline">Ask Copilot</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Dynamic View Container -->
-  <main class="flex-1">
-    <!-- LANDING VIEW -->
-    <section id="landingView" class="relative overflow-hidden py-10 sm:py-16">
-      <div class="civic-glow absolute inset-0 pointer-events-none"></div>
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-[1.1fr_.9fr] gap-12 items-center">
-        <div>
-          <div class="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-orange-800">
-            <i data-lucide="sparkles" class="size-3.5 text-orange-600"></i>
-            <span>CENSUS 2027 CIVIC COPILOT</span>
+  <!-- ========================================================
+       HERO SECTION (#journey)
+  ======================================================== -->
+  <section id="journey" class="relative overflow-hidden py-10 sm:py-16">
+    <div class="civic-glow absolute inset-0 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1.1fr_.9fr] gap-10 items-center">
+      
+      <!-- Hero Left: Greeting & Overview -->
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-orange-800 shadow-sm">
+          <i data-lucide="sparkles" class="size-3.5 text-orange-600"></i>
+          <span id="heroGreetingBadge">नमस्ते • CENSUS 2027 CIVIC COMPANION</span>
+        </div>
+
+        <h1 class="mt-4 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-emerald-950 leading-tight">
+          Census Saathi.<br/>
+          <span class="text-orange-600">Census 2027. Simplified for every citizen.</span>
+        </h1>
+
+        <p class="mt-5 text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
+          Prepare for digital self-enumeration, verify viral WhatsApp claims, practice the official questionnaire, and explore six decades of India’s demographic journey—in your preferred language.
+        </p>
+
+        <!-- Quick Action Buttons -->
+        <div class="mt-8 flex flex-wrap gap-3 items-center">
+          <a href="#prepare" class="inline-flex items-center gap-2 rounded-2xl bg-emerald-900 px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-emerald-950/15 hover:bg-emerald-800 transition">
+            <span>Practice Self-Enumeration</span>
+            <i data-lucide="arrow-right" class="size-4"></i>
+          </a>
+          <a href="#factcheck" class="inline-flex items-center gap-2 rounded-2xl bg-orange-500 hover:bg-orange-600 px-5 py-3.5 text-sm font-bold text-white shadow-md transition">
+            <i data-lucide="shield-alert" class="size-4"></i>
+            <span>Rumour Buster</span>
+          </a>
+          <a href="#explore" class="inline-flex items-center gap-2 rounded-2xl border border-emerald-900/20 bg-white px-5 py-3.5 text-sm font-semibold text-emerald-950 shadow-sm hover:bg-emerald-50 transition">
+            <i data-lucide="bar-chart-3" class="size-4 text-emerald-700"></i>
+            <span>Explore 1951-2011 Data</span>
+          </a>
+        </div>
+
+        <!-- Privacy Assurance Banner -->
+        <div class="mt-6 flex items-center gap-2 text-xs text-slate-500">
+          <i data-lucide="lock" class="size-3.5 text-emerald-700"></i>
+          <span>Zero Aadhaar collection • Practice data runs strictly on your device • Census Act 1948 protected</span>
+        </div>
+      </div>
+
+      <!-- Hero Right: Dynamic State Card & Progress Summary -->
+      <div class="relative">
+        <div class="rounded-3xl border border-white/80 bg-white/90 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+          <!-- Main Sate Progress Box -->
+          <div class="rounded-2xl bg-emerald-950 p-6 text-white shadow-inner">
+            <div class="flex items-center justify-between text-xs font-semibold text-emerald-200">
+              <span class="tracking-wider uppercase">YOUR CENSUS READINESS</span>
+              <span id="heroStatePill" class="rounded-full bg-white/15 px-2.5 py-0.5 text-[11px] text-white">Maharashtra</span>
+            </div>
+            <p class="mt-4 text-2xl sm:text-3xl font-bold tracking-tight font-display">Ready for digital Census 2027.</p>
+            
+            <div class="mt-5 h-2.5 w-full overflow-hidden rounded-full bg-white/15">
+              <div id="heroProgressBar" class="h-full w-1/3 rounded-full bg-orange-400 transition-all duration-700"></div>
+            </div>
+            <div class="mt-2.5 flex justify-between text-[11px] font-medium text-emerald-200/80">
+              <span>01. Practice</span>
+              <span>02. Self-Enumerate</span>
+              <span>03. Verification</span>
+            </div>
           </div>
-          <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-emerald-950 leading-tight">
-            Census Saathi.<br/>
-            <span class="text-orange-600">Census 2027. Simplified for every citizen.</span>
-          </h1>
-          <p class="mt-6 text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
-            Understand Census 2027, prepare for digital self-enumeration, verify viral rumours, and explore official demographic data—in your preferred language.
+
+          <!-- 4 State Historical Stats Grid -->
+          <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div class="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-3 text-center">
+              <span class="text-[10px] font-bold uppercase text-slate-500 block">2011 Pop.</span>
+              <span id="cardPop" class="text-base font-extrabold text-emerald-950 block mt-0.5">112.4M</span>
+            </div>
+            <div class="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-3 text-center">
+              <span class="text-[10px] font-bold uppercase text-slate-500 block">Literacy</span>
+              <span id="cardLit" class="text-base font-extrabold text-emerald-950 block mt-0.5">82.3%</span>
+            </div>
+            <div class="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-3 text-center">
+              <span class="text-[10px] font-bold uppercase text-slate-500 block">Sex Ratio</span>
+              <span id="cardSex" class="text-base font-extrabold text-emerald-950 block mt-0.5">929</span>
+            </div>
+            <div class="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-3 text-center">
+              <span class="text-[10px] font-bold uppercase text-slate-500 block">Urban Share</span>
+              <span id="cardUrb" class="text-base font-extrabold text-emerald-950 block mt-0.5">45.2%</span>
+            </div>
+          </div>
+
+          <!-- Bottom Micro Cards -->
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            <div class="rounded-2xl border border-orange-200 bg-orange-50/80 p-3.5 flex items-start gap-2.5">
+              <i data-lucide="bot" class="size-4 text-orange-600 shrink-0 mt-0.5"></i>
+              <div>
+                <span class="text-xs font-bold text-orange-950 block">AI Copilot</span>
+                <span id="heroLangCardText" class="text-[11px] text-orange-800">Support in English</span>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-3.5 flex items-start gap-2.5">
+              <i data-lucide="shield-check" class="size-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <div>
+                <span class="text-xs font-bold text-emerald-950 block">Section 15 Act</span>
+                <span class="text-[11px] text-emerald-800">Court Inadmissible</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 2: UNDERSTANDING CENSUS 2027 (#understand)
+  ======================================================== -->
+  <section id="understand" class="py-14 border-t border-emerald-950/10 bg-white/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-orange-700">Demographic Framework</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-emerald-950">The Two Phases of Census 2027</h2>
+        <p class="mt-3 text-sm sm:text-base text-slate-600">
+          The Census of India is executed in two distinct, sequential phases to ensure exhaustive national coverage.
+        </p>
+      </div>
+
+      <div class="mt-10 grid md:grid-cols-2 gap-8">
+        <!-- Phase 1 Card -->
+        <div class="rounded-3xl border border-emerald-900/10 bg-white p-7 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold px-3 py-1">PHASE 01</span>
+            <span class="text-xs font-semibold text-slate-500">31 Questions</span>
+          </div>
+          <h3 class="mt-4 text-2xl font-bold text-emerald-950">Houselisting &amp; Housing Census</h3>
+          <p class="mt-2 text-sm text-slate-600">
+            Creates a comprehensive national inventory of all physical structures, residential premises, household amenities, and assets.
           </p>
 
-          <!-- Preferences Selection -->
-          <div class="mt-8 grid sm:grid-cols-2 gap-4 max-w-xl">
-            <div class="bg-white rounded-2xl p-3.5 border border-emerald-900/10 shadow-sm">
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
-                <i data-lucide="languages" class="size-3.5 text-emerald-700"></i>
-                Preferred Language
-              </label>
-              <select id="prefLang" onchange="savePreferences()" class="w-full bg-transparent text-sm font-semibold text-emerald-950 outline-none cursor-pointer">
-                <option value="English">English</option>
-                <option value="Hindi">हिन्दी (Hindi)</option>
-                <option value="Marathi">मराठी (Marathi)</option>
-                <option value="Bengali">বাংলা (Bengali)</option>
-                <option value="Telugu">తెలుగు (Telugu)</option>
-                <option value="Tamil">தமிழ் (Tamil)</option>
-                <option value="Gujarati">ગુજરાતી (Gujarati)</option>
-                <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
-                <option value="Malayalam">മലയാളം (Malayalam)</option>
-                <option value="Punjabi">ਪੰਜਾਬੀ (Punjabi)</option>
-                <option value="Odia">ଓଡ଼ିଆ (Odia)</option>
-                <option value="Assamese">অসমীয়া (Assamese)</option>
-                <option value="Urdu">اردو (Urdu)</option>
+          <div class="mt-5 space-y-2 text-xs text-slate-700">
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50">
+              <i data-lucide="home" class="size-4 text-emerald-700 shrink-0"></i>
+              <span>Building materials: Wall, roof &amp; floor composition</span>
+            </div>
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50">
+              <i data-lucide="droplet" class="size-4 text-emerald-700 shrink-0"></i>
+              <span>Drinking water source &amp; location (within or outside premises)</span>
+            </div>
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50">
+              <i data-lucide="zap" class="size-4 text-emerald-700 shrink-0"></i>
+              <span>Lighting source, latrine access, drainage &amp; cooking fuel</span>
+            </div>
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50">
+              <i data-lucide="tv" class="size-4 text-emerald-700 shrink-0"></i>
+              <span>Assets: Television, Internet, computer, two-wheeler/four-wheeler</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 2 Card -->
+        <div class="rounded-3xl border border-orange-200 bg-white p-7 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-orange-100 text-orange-900 text-xs font-bold px-3 py-1">PHASE 02</span>
+            <span class="text-xs font-semibold text-slate-500">29 Questions</span>
+          </div>
+          <h3 class="mt-4 text-2xl font-bold text-emerald-950">Population Enumeration</h3>
+          <p class="mt-2 text-sm text-slate-600">
+            Headcount and individual socio-demographic survey of every resident living in India during the enumeration reference period.
+          </p>
+
+          <div class="mt-5 space-y-2 text-xs text-slate-700">
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-orange-50/50">
+              <i data-lucide="users" class="size-4 text-orange-600 shrink-0"></i>
+              <span>Name, relationship to head, gender, date of birth &amp; age</span>
+            </div>
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-orange-50/50">
+              <i data-lucide="book-open" class="size-4 text-orange-600 shrink-0"></i>
+              <span>Mother tongue, other languages known &amp; highest educational attainment</span>
+            </div>
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-orange-50/50">
+              <i data-lucide="briefcase" class="size-4 text-orange-600 shrink-0"></i>
+              <span>Economic activity, occupation, industry &amp; category of worker</span>
+            </div>
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-orange-50/50">
+              <i data-lucide="navigation" class="size-4 text-orange-600 shrink-0"></i>
+              <span>Place of birth, place of last residence &amp; duration of migration</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 3: TIMELINE & ROADMAP (#timeline)
+  ======================================================== -->
+  <section id="timeline" class="py-14 border-t border-emerald-950/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Gazette &amp; Operations</span>
+          <h2 class="mt-1 text-3xl font-extrabold text-emerald-950">Census 2027 National Roadmap</h2>
+        </div>
+        <div class="rounded-2xl border border-emerald-900/15 bg-white px-4 py-2 text-xs font-semibold text-emerald-950 shadow-sm flex items-center gap-2">
+          <i data-lucide="bell" class="size-4 text-orange-600"></i>
+          <span>State Schedule Status: <strong id="timelineStateStatus">Notification Pending by ORGI</strong></span>
+        </div>
+      </div>
+
+      <!-- 5 Stages Grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- Stage 1 -->
+        <div class="rounded-2xl border-2 border-emerald-700 bg-white p-5 shadow-sm relative">
+          <span class="inline-block rounded-md bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 uppercase">Stage 01 • ACTIVE</span>
+          <h4 class="text-sm font-bold text-emerald-950 mt-2">Civic Prep &amp; Awareness</h4>
+          <p class="text-xs text-slate-500 mt-1">Practice digital self-enumeration, verify household parameters, and understand rights under Census Act 1948.</p>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-sm">
+          <span class="inline-block rounded-md bg-slate-200 text-slate-700 text-[10px] font-bold px-2 py-0.5 uppercase">Stage 02</span>
+          <h4 class="text-sm font-bold text-emerald-950 mt-2">Phase I: Houselisting</h4>
+          <p class="text-xs text-slate-500 mt-1">Survey of physical dwelling units, lighting, drinking water, cooking fuel, and household assets.</p>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-sm">
+          <span class="inline-block rounded-md bg-slate-200 text-slate-700 text-[10px] font-bold px-2 py-0.5 uppercase">Stage 03</span>
+          <h4 class="text-sm font-bold text-emerald-950 mt-2">Phase II: Headcount</h4>
+          <p class="text-xs text-slate-500 mt-1">Comprehensive population count, age, educational qualifications, language, and occupation details.</p>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-sm">
+          <span class="inline-block rounded-md bg-slate-200 text-slate-700 text-[10px] font-bold px-2 py-0.5 uppercase">Stage 04</span>
+          <h4 class="text-sm font-bold text-emerald-950 mt-2">Quality Audit</h4>
+          <p class="text-xs text-slate-500 mt-1">Statistical validation, duplicate deduplication, and preliminary aggregation across national servers.</p>
+        </div>
+
+        <!-- Stage 5 -->
+        <div class="rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-sm">
+          <span class="inline-block rounded-md bg-slate-200 text-slate-700 text-[10px] font-bold px-2 py-0.5 uppercase">Stage 05</span>
+          <h4 class="text-sm font-bold text-emerald-950 mt-2">Provisional Release</h4>
+          <p class="text-xs text-slate-500 mt-1">Official publication of provisional population totals, literacy tables, sex ratios, and urbanization figures.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 4: 5-STEP SELF-ENUMERATION SIMULATOR (#prepare)
+  ======================================================== -->
+  <section id="prepare" class="py-14 border-t border-emerald-950/10 bg-emerald-950 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <span class="text-xs font-bold uppercase tracking-wider text-orange-400">Interactive Practice Lab</span>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold">Digital Self-Enumeration Simulator</h2>
+        <p class="mt-3 text-sm text-emerald-200/80">
+          Experience the 5 key steps of digital self-enumeration before the official portal opens. Practice with fictional data to receive your mock Self-Enumeration Acknowledgment Number (SEAN).
+        </p>
+      </div>
+
+      <!-- Simulator Box -->
+      <div class="mt-8 bg-white text-[#102a26] rounded-3xl p-6 sm:p-10 shadow-2xl">
+        <!-- Step Indicators -->
+        <div class="flex items-center justify-between border-b border-slate-200 pb-5 mb-6 overflow-x-auto gap-2">
+          <div id="simTab0" class="flex items-center gap-2 text-xs font-bold text-emerald-800 cursor-pointer" onclick="setSimStep(0)">
+            <span class="size-6 rounded-full bg-emerald-800 text-white grid place-items-center text-xs">1</span>
+            <span>Housing</span>
+          </div>
+          <div id="simTab1" class="flex items-center gap-2 text-xs font-bold text-slate-400 cursor-pointer" onclick="setSimStep(1)">
+            <span class="size-6 rounded-full bg-slate-200 text-slate-700 grid place-items-center text-xs">2</span>
+            <span>Amenities</span>
+          </div>
+          <div id="simTab2" class="flex items-center gap-2 text-xs font-bold text-slate-400 cursor-pointer" onclick="setSimStep(2)">
+            <span class="size-6 rounded-full bg-slate-200 text-slate-700 grid place-items-center text-xs">3</span>
+            <span>Assets</span>
+          </div>
+          <div id="simTab3" class="flex items-center gap-2 text-xs font-bold text-slate-400 cursor-pointer" onclick="setSimStep(3)">
+            <span class="size-6 rounded-full bg-slate-200 text-slate-700 grid place-items-center text-xs">4</span>
+            <span>Household</span>
+          </div>
+          <div id="simTab4" class="flex items-center gap-2 text-xs font-bold text-slate-400 cursor-pointer" onclick="setSimStep(4)">
+            <span class="size-6 rounded-full bg-slate-200 text-slate-700 grid place-items-center text-xs">5</span>
+            <span>Mock SEAN</span>
+          </div>
+        </div>
+
+        <!-- Step 1 Content -->
+        <div id="simStep0" class="space-y-4">
+          <h4 class="text-base font-bold text-emerald-950">Step 1: Housing &amp; Dwelling Characteristics</h4>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Building Structure Type</label>
+              <select id="simDwelling" class="w-full rounded-xl border border-slate-300 p-3 text-sm bg-slate-50 outline-none">
+                <option value="Pucca (Concrete / Brick)">Pucca House (Concrete / Brick)</option>
+                <option value="Semi-Pucca">Semi-Pucca House</option>
+                <option value="Kutcha (Thatched / Mud)">Kutcha House</option>
               </select>
             </div>
-
-            <div class="bg-white rounded-2xl p-3.5 border border-emerald-900/10 shadow-sm">
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
-                <i data-lucide="map-pin" class="size-3.5 text-emerald-700"></i>
-                Your State / UT
-              </label>
-              <select id="prefState" onchange="savePreferences()" class="w-full bg-transparent text-sm font-semibold text-emerald-950 outline-none cursor-pointer">
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                <option value="Bihar">Bihar</option>
-                <option value="West Bengal">West Bengal</option>
-                <option value="Madhya Pradesh">Madhya Pradesh</option>
-                <option value="Tamil Nadu">Tamil Nadu</option>
-                <option value="Rajasthan">Rajasthan</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Gujarat">Gujarat</option>
-                <option value="Andhra Pradesh">Andhra Pradesh</option>
-                <option value="Kerala">Kerala</option>
-                <option value="Delhi (NCT)">Delhi (NCT)</option>
-                <option value="Punjab">Punjab</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Odisha">Odisha</option>
-                <option value="Telangana">Telangana</option>
-                <option value="Assam">Assam</option>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Ownership Status</label>
+              <select id="simOwnership" class="w-full rounded-xl border border-slate-300 p-3 text-sm bg-slate-50 outline-none">
+                <option value="Owned">Owned</option>
+                <option value="Rented">Rented</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>
+          <div class="flex justify-end pt-4">
+            <button onclick="setSimStep(1)" class="bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-bold px-6 py-3 rounded-xl transition">Next: Amenities &rarr;</button>
+          </div>
+        </div>
 
-          <div class="mt-6 flex flex-col items-start gap-3">
-            <button onclick="showDashboardView()" class="inline-flex min-h-14 items-center justify-center gap-3 rounded-2xl bg-emerald-900 px-8 text-base font-semibold text-white shadow-xl shadow-emerald-950/15 transition-all hover:-translate-y-0.5 hover:bg-emerald-800">
-              <span>Enter Census Saathi</span>
-              <i data-lucide="arrow-right" class="size-5"></i>
-            </button>
-            <p class="text-xs text-slate-500 max-w-lg">
-              No account or login required. All preferences are stored locally in your browser. We never ask for Aadhaar numbers or personal identity documents.
+        <!-- Step 2 Content -->
+        <div id="simStep1" class="hidden space-y-4">
+          <h4 class="text-base font-bold text-emerald-950">Step 2: Basic Household Amenities</h4>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Drinking Water Source</label>
+              <select id="simWater" class="w-full rounded-xl border border-slate-300 p-3 text-sm bg-slate-50 outline-none">
+                <option value="Piped Tap Water (Within Premises)">Piped Tap Water (Within Premises)</option>
+                <option value="Tube-well / Borewell">Tube-well / Borewell</option>
+                <option value="Public Tap / Standpost">Public Tap / Standpost</option>
+                <option value="Covered Well">Covered Well</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Primary Lighting Source</label>
+              <select id="simLight" class="w-full rounded-xl border border-slate-300 p-3 text-sm bg-slate-50 outline-none">
+                <option value="Electricity">Electricity</option>
+                <option value="Solar Energy">Solar Energy</option>
+                <option value="Kerosene">Kerosene</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Latrine Access</label>
+              <select id="simLatrine" class="w-full rounded-xl border border-slate-300 p-3 text-sm bg-slate-50 outline-none">
+                <option value="Flush / Pour Flush Latrine">Flush / Pour Flush Latrine</option>
+                <option value="Pit Latrine">Pit Latrine</option>
+                <option value="Community / Public Toilet">Community / Public Toilet</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Cooking Fuel</label>
+              <select id="simFuel" class="w-full rounded-xl border border-slate-300 p-3 text-sm bg-slate-50 outline-none">
+                <option value="LPG / PNG Connection">LPG / PNG Connection</option>
+                <option value="Electric Induction">Electric Induction</option>
+                <option value="Firewood / Biomass">Firewood / Biomass</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex justify-between pt-4">
+            <button onclick="setSimStep(0)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-5 py-3 rounded-xl transition">&larr; Back</button>
+            <button onclick="setSimStep(2)" class="bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-bold px-6 py-3 rounded-xl transition">Next: Assets &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 3 Content -->
+        <div id="simStep2" class="hidden space-y-4">
+          <h4 class="text-base font-bold text-emerald-950">Step 3: Household Assets (Houselisting Question 28)</h4>
+          <p class="text-xs text-slate-500">Select which of the following assets are available in the household:</p>
+          <div class="grid sm:grid-cols-3 gap-3">
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer">
+              <input type="checkbox" checked class="size-4 text-emerald-800 rounded" />
+              <span class="text-xs font-semibold text-slate-800">Television</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer">
+              <input type="checkbox" checked class="size-4 text-emerald-800 rounded" />
+              <span class="text-xs font-semibold text-slate-800">Internet Access</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer">
+              <input type="checkbox" checked class="size-4 text-emerald-800 rounded" />
+              <span class="text-xs font-semibold text-slate-800">Computer / Laptop</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer">
+              <input type="checkbox" checked class="size-4 text-emerald-800 rounded" />
+              <span class="text-xs font-semibold text-slate-800">Two-Wheeler / Scooter</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer">
+              <input type="checkbox" class="size-4 text-emerald-800 rounded" />
+              <span class="text-xs font-semibold text-slate-800">Four-Wheeler / Car</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer">
+              <input type="checkbox" checked class="size-4 text-emerald-800 rounded" />
+              <span class="text-xs font-semibold text-slate-800">Banking Access (Yes/No)</span>
+            </label>
+          </div>
+          <div class="flex justify-between pt-4">
+            <button onclick="setSimStep(1)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-5 py-3 rounded-xl transition">&larr; Back</button>
+            <button onclick="setSimStep(3)" class="bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-bold px-6 py-3 rounded-xl transition">Next: Household &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 4 Content -->
+        <div id="simStep3" class="hidden space-y-4">
+          <h4 class="text-base font-bold text-emerald-950">Step 4: Demo Household Composition</h4>
+          <p class="text-xs text-orange-700 font-medium">⚠️ Privacy Notice: Please use sample/fictional names for this practice simulation. Never enter real identity numbers.</p>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Household Size</label>
+              <select id="simMembers" class="w-full rounded-xl border border-slate-300 p-3 text-sm bg-slate-50 outline-none">
+                <option value="4 Members">4 Members (Demo Household)</option>
+                <option value="2 Members">2 Members</option>
+                <option value="5 Members">5 Members</option>
+                <option value="6+ Members">6+ Members</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Fictional Head of Family</label>
+              <input id="simHead" type="text" value="Suresh Patil (DEMO ONLY)" class="w-full rounded-xl border border-slate-300 p-3 text-sm bg-slate-50 outline-none" />
+            </div>
+          </div>
+          <div class="flex justify-between pt-4">
+            <button onclick="setSimStep(2)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-5 py-3 rounded-xl transition">&larr; Back</button>
+            <button onclick="generateMockSean()" class="bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-bold px-6 py-3 rounded-xl transition">Generate Mock SEAN Code &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 5 (Result) -->
+        <div id="simStep4" class="hidden space-y-5 text-center py-4">
+          <div class="size-16 rounded-full bg-emerald-100 text-emerald-800 grid place-items-center mx-auto">
+            <i data-lucide="check-circle" class="size-8"></i>
+          </div>
+          <h4 class="text-2xl font-bold text-emerald-950">Simulation Complete!</h4>
+          <p class="text-xs text-slate-600 max-w-md mx-auto">
+            In the official Census 2027 rollout, your self-enumeration acknowledgment number (SEAN) will be sent via official SMS to show the visiting enumerator.
+          </p>
+
+          <div class="max-w-md mx-auto p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-700 text-emerald-950">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block">Your Mock Practice SEAN Code</span>
+            <span id="mockSeanDisplay" class="text-2xl font-extrabold font-mono tracking-widest text-emerald-950 block mt-2">DEMO-2027-MH-8492</span>
+          </div>
+
+          <div class="flex justify-center gap-3 pt-2">
+            <button onclick="setSimStep(0)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-5 py-2.5 rounded-xl transition">Restart Practice</button>
+            <a href="#factcheck" class="bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition">Check Rumour Buster</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 5: DEMOGRAPHIC DATA EXPLORER (#explore)
+  ======================================================== -->
+  <section id="explore" class="py-14 border-t border-emerald-950/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Historical Intelligence</span>
+          <h2 class="mt-1 text-3xl font-extrabold text-emerald-950">Census Data Explorer (1951 - 2011)</h2>
+          <p class="text-sm text-slate-600 mt-1">Explore six decades of verified decadal demographic benchmarks compiled by ORGI.</p>
+        </div>
+
+        <button onclick="explainCurrentChart()" class="inline-flex items-center gap-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-xs font-bold shadow-sm transition">
+          <i data-lucide="sparkles" class="size-4"></i>
+          <span>AI Chart Insight</span>
+        </button>
+      </div>
+
+      <!-- Chart Tabs -->
+      <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-3 mb-6">
+        <button id="tabChartPop" onclick="switchChart('population')" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-900 text-white shadow-sm transition">
+          📈 Population Surge (1951-2011)
+        </button>
+        <button id="tabChartLit" onclick="switchChart('literacy')" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          📚 Literacy by Gender (1951-2011)
+        </button>
+        <button id="tabChartUrb" onclick="switchChart('rural_urban')" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          🏙️ Rural vs Urban Indicators (2011)
+        </button>
+        <button id="tabChartTop" onclick="switchChart('state_matrix')" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          🏆 State Leaderboards
+        </button>
+      </div>
+
+      <!-- Main Chart Container -->
+      <div class="grid lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-2 bg-white rounded-3xl border border-emerald-900/10 p-6 sm:p-8 shadow-sm">
+          <div id="chartCanvasContainer" class="h-80 w-full relative">
+            <canvas id="historicalChart"></canvas>
+          </div>
+
+          <!-- Leaderboard Table Container (shown on state_matrix) -->
+          <div id="leaderboardContainer" class="hidden space-y-4">
+            <h4 class="text-sm font-bold text-emerald-950">Top Performing States &amp; UTs (Census 2011)</h4>
+            <div class="grid sm:grid-cols-3 gap-4">
+              <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
+                <span class="text-xs font-bold text-emerald-900 block">Highest Literacy</span>
+                <ol class="text-xs text-emerald-950 mt-2 space-y-1">
+                  <li>1. Kerala (94.0%)</li>
+                  <li>2. Lakshadweep (91.8%)</li>
+                  <li>3. Mizoram (91.3%)</li>
+                  <li>4. Goa (88.7%)</li>
+                  <li>5. Tripura (87.2%)</li>
+                </ol>
+              </div>
+              <div class="p-4 rounded-2xl bg-orange-50 border border-orange-200">
+                <span class="text-xs font-bold text-orange-900 block">Highest Sex Ratio</span>
+                <ol class="text-xs text-orange-950 mt-2 space-y-1">
+                  <li>1. Kerala (1084)</li>
+                  <li>2. Puducherry (1037)</li>
+                  <li>3. Tamil Nadu (996)</li>
+                  <li>4. Andhra Pradesh (993)</li>
+                  <li>5. Chhattisgarh (991)</li>
+                </ol>
+              </div>
+              <div class="p-4 rounded-2xl bg-blue-50 border border-blue-200">
+                <span class="text-xs font-bold text-blue-900 block">Highest Urban Share</span>
+                <ol class="text-xs text-blue-950 mt-2 space-y-1">
+                  <li>1. Delhi (NCT) (97.5%)</li>
+                  <li>2. Chandigarh (97.3%)</li>
+                  <li>3. Lakshadweep (78.0%)</li>
+                  <li>4. Goa (62.2%)</li>
+                  <li>5. Mizoram (52.1%)</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Chart Analysis Sidebar -->
+        <div class="bg-white rounded-3xl border border-emerald-900/10 p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-2 text-xs font-bold text-orange-600 uppercase tracking-wider">
+            <i data-lucide="bot" class="size-4"></i>
+            <span>Analytical Takeaways</span>
+          </div>
+
+          <div id="aiInsightBox" class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-2">
+            <p id="aiInsightSummary">
+              India’s population increased from <strong>361.1 Million in 1951</strong> to <strong>1.21 Billion in 2011</strong>, reflecting six decades of healthcare and longevity advancements alongside a stabilizing decadal growth rate (17.7% in 2011 vs 24.8% peak in 1971).
+            </p>
+            <div class="pt-2 border-t border-slate-200 text-[11px] text-slate-500 font-medium">
+              Key Metric: Female literacy jumped from 8.9% (1951) to 65.5% (2011).
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-emerald-950 p-4 text-white text-xs space-y-2">
+            <span class="font-bold text-emerald-200 block text-[11px] uppercase tracking-wider">Demographic Baseline</span>
+            <p class="text-emerald-100/90 leading-relaxed">
+              These historical aggregates form the foundational baseline against which Census 2027 will measure new digital economy indicators.
             </p>
           </div>
         </div>
-
-        <!-- Hero Graphic Card -->
-        <div class="relative">
-          <div class="rounded-3xl border border-white/80 bg-white/90 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
-            <div class="rounded-2xl bg-emerald-950 p-6 text-white shadow-inner">
-              <div class="flex items-center justify-between text-xs font-semibold text-emerald-200">
-                <span class="tracking-wider uppercase">YOUR CENSUS JOURNEY</span>
-                <span id="heroStateBadge" class="rounded-full bg-white/15 px-2.5 py-0.5 text-[11px] text-white">Maharashtra</span>
-              </div>
-              <p class="mt-5 text-2xl sm:text-3xl font-bold tracking-tight font-display">Ready for digital Census 2027.</p>
-              <div class="mt-6 h-2 w-full overflow-hidden rounded-full bg-white/15">
-                <div class="h-full w-2/5 rounded-full bg-orange-400"></div>
-              </div>
-              <div class="mt-3 flex justify-between text-[11px] font-medium text-emerald-200/80">
-                <span>01. Prepare</span>
-                <span>02. Self-Enumerate</span>
-                <span>03. Verification</span>
-              </div>
-            </div>
-
-            <div class="mt-4 grid grid-cols-2 gap-3">
-              <div class="rounded-2xl border border-orange-200 bg-orange-50/80 p-4">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-orange-800">
-                  <i data-lucide="bot" class="size-3.5 text-orange-600"></i>
-                  <span>AI COPILOT</span>
-                </div>
-                <p id="heroAiLang" class="mt-2 text-xs font-semibold text-slate-800">Multilingual assistance in English</p>
-              </div>
-
-              <div class="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-800">
-                  <i data-lucide="file-check-2" class="size-3.5 text-emerald-600"></i>
-                  <span>FACT CHECKER</span>
-                </div>
-                <p class="mt-2 text-xs font-semibold text-slate-800">Detect WhatsApp scams &amp; verify rumours</p>
-              </div>
-            </div>
-
-            <div class="mt-4 flex items-center justify-between rounded-xl bg-slate-50 px-4 py-2.5 text-xs text-slate-600">
-              <span class="flex items-center gap-2 font-medium">
-                <i data-lucide="lock" class="size-3.5 text-emerald-700"></i>
-                Zero Aadhaar or document collection
-              </span>
-              <i data-lucide="check-circle" class="size-4 text-emerald-600"></i>
-            </div>
-          </div>
-        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- DASHBOARD VIEW -->
-    <section id="dashboardView" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Dashboard Header -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-emerald-900/10 pb-6 mb-8">
-        <div>
-          <div class="flex items-center gap-2 text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">
-            <span class="inline-block size-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Civic Portal • Census 2027 Dashboard
-          </div>
-          <h2 class="text-3xl font-extrabold text-emerald-950 font-display">Census Saathi Hub</h2>
-        </div>
-        <div class="flex flex-wrap items-center gap-3">
-          <div class="bg-white border border-emerald-900/15 rounded-xl px-3 py-1.5 text-xs font-semibold text-emerald-900 flex items-center gap-2">
-            <i data-lucide="map-pin" class="size-3.5 text-orange-600"></i>
-            <span id="dashStateDisplay">Maharashtra</span>
-          </div>
-          <div class="bg-white border border-emerald-900/15 rounded-xl px-3 py-1.5 text-xs font-semibold text-emerald-900 flex items-center gap-2">
-            <i data-lucide="languages" class="size-3.5 text-emerald-600"></i>
-            <span id="dashLangDisplay">English</span>
-          </div>
-          <button onclick="showLandingView()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl px-3 py-1.5 text-xs font-semibold transition">
-            Change Setup
+  <!-- ========================================================
+       SECTION 6: RUMOUR BUSTER & SCAM DETECTOR (#factcheck)
+  ======================================================== -->
+  <section id="factcheck" class="py-14 border-t border-emerald-950/10 bg-orange-50/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <span class="text-xs font-bold uppercase tracking-wider text-orange-800">Scam &amp; Misinformation Buster</span>
+        <h2 class="mt-1 text-3xl sm:text-4xl font-extrabold text-emerald-950">Viral Rumour &amp; Fraud Checker</h2>
+        <p class="mt-2 text-sm text-slate-600">
+          Paste any forwarded WhatsApp message, claim, or SMS regarding Census 2027 to verify it against official statutory rules and PIB alerts.
+        </p>
+      </div>
+
+      <!-- Input Claim Box -->
+      <div class="mt-8 bg-white rounded-3xl border border-orange-200 p-6 sm:p-8 shadow-sm">
+        <div class="flex gap-2">
+          <input id="claimInput" type="text" placeholder="e.g., Is it mandatory to give Aadhaar card to Census enumerator?" class="flex-1 rounded-2xl border border-slate-300 px-4 py-3.5 text-sm outline-none focus:ring-2 focus:ring-orange-500" />
+          <button onclick="checkCustomClaim()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-md transition flex items-center gap-2">
+            <i data-lucide="search" class="size-4"></i>
+            <span>Verify Claim</span>
           </button>
         </div>
-      </div>
 
-      <!-- Feature Grid -->
-      <div class="grid lg:grid-cols-3 gap-8">
-        <!-- Left 2 Cols: AI Copilot & Fact Check -->
-        <div class="lg:col-span-2 space-y-6">
-          <!-- AI Copilot Card -->
-          <div class="bg-white rounded-3xl border border-emerald-900/10 p-6 sm:p-8 shadow-sm">
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <div class="size-10 rounded-2xl bg-emerald-900 text-white grid place-items-center">
-                  <i data-lucide="bot" class="size-5"></i>
-                </div>
-                <div>
-                  <h3 class="text-lg font-bold text-emerald-950 font-display">Census AI Companion</h3>
-                  <p class="text-xs text-slate-500">Ask questions about Census 2027 rules, questions, and dates</p>
-                </div>
-              </div>
-              <span class="rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-[11px] font-semibold text-emerald-800">
-                PII Protected
-              </span>
-            </div>
-
-            <!-- Pre-defined questions -->
-            <div class="flex flex-wrap gap-2 mb-4">
-              <button onclick="setQuery('Will the enumerator ask for my Aadhaar number or bank details?')" class="rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 font-medium transition">
-                🔒 Will they ask for Aadhaar?
-              </button>
-              <button onclick="setQuery('What questions are asked in the Houselisting phase?')" class="rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 font-medium transition">
-                📋 Phase 1 Questionnaire
-              </button>
-              <button onclick="setQuery('How does digital self-enumeration work?')" class="rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 font-medium transition">
-                📱 Digital Self-Enumeration
-              </button>
-            </div>
-
-            <div class="flex gap-2">
-              <input id="aiQuestionInput" type="text" placeholder="Type your Census 2027 question here..." class="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition" />
-              <button onclick="askQuestion()" class="bg-emerald-900 hover:bg-emerald-800 text-white px-5 py-3 rounded-2xl font-semibold text-sm flex items-center gap-2 transition shadow-md">
-                <span>Ask</span>
-                <i data-lucide="send" class="size-4"></i>
-              </button>
-            </div>
-
-            <!-- AI Response Box -->
-            <div id="aiResponseBox" class="mt-4 p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 text-sm text-emerald-950 hidden">
-              <div class="flex items-center gap-2 font-bold text-xs text-emerald-900 uppercase tracking-wider mb-1">
-                <i data-lucide="sparkles" class="size-3.5 text-orange-600"></i>
-                Census Saathi Answer
-              </div>
-              <p id="aiResponseText" class="text-sm leading-relaxed mt-1"></p>
-              <div class="mt-3 pt-2 border-t border-emerald-900/10 text-[11px] text-emerald-800 flex justify-between items-center">
-                <span>Source: Official Census Act 1948 &amp; ORGI Guidelines</span>
-                <span>Ground truth verified</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Fact Check & Scam Detector -->
-          <div class="bg-white rounded-3xl border border-orange-200/80 p-6 sm:p-8 shadow-sm">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="size-10 rounded-2xl bg-orange-600 text-white grid place-items-center">
-                <i data-lucide="shield-alert" class="size-5"></i>
-              </div>
-              <div>
-                <h3 class="text-lg font-bold text-emerald-950 font-display">Viral Rumour &amp; Scam Buster</h3>
-                <p class="text-xs text-slate-500">Verify suspicious WhatsApp messages, fake census forms &amp; payment demands</p>
-              </div>
-            </div>
-
-            <div class="space-y-3">
-              <div class="p-4 rounded-2xl bg-red-50/70 border border-red-200 flex items-start gap-3">
-                <i data-lucide="x-circle" class="size-5 text-red-600 shrink-0 mt-0.5"></i>
-                <div>
-                  <h4 class="text-xs font-bold text-red-900 uppercase">Debunked: Payment for Census registration</h4>
-                  <p class="text-xs text-red-800 mt-1">Official Census enumeration is 100% free of charge. No officer will ever ask for OTPs, bank details, or processing fees.</p>
-                </div>
-              </div>
-
-              <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex items-start gap-3">
-                <i data-lucide="check-circle-2" class="size-5 text-emerald-600 shrink-0 mt-0.5"></i>
-                <div>
-                  <h4 class="text-xs font-bold text-emerald-900 uppercase">Fact: Legal Protection under Census Act 1948</h4>
-                  <p class="text-xs text-emerald-800 mt-1">Section 15 of the Census Act guarantees that individual data is confidential and cannot be used as evidence in courts or for taxation.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Preloaded Quick Claims -->
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="text-xs font-bold text-slate-500 self-center mr-1">Popular claims:</span>
+          <button onclick="testClaim(0)" class="rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 font-medium transition">
+            ₹500 fee for Census registration
+          </button>
+          <button onclick="testClaim(1)" class="rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 font-medium transition">
+            Aadhaar card mandatory handover
+          </button>
+          <button onclick="testClaim(2)" class="rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 font-medium transition">
+            Bank PIN / password asked
+          </button>
+          <button onclick="testClaim(3)" class="rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 font-medium transition">
+            Census data shared with Income Tax
+          </button>
+          <button onclick="testClaim(4)" class="rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 font-medium transition">
+            Download Census APK from WhatsApp
+          </button>
         </div>
 
-        <!-- Right Col: Timeline & Demographics -->
-        <div class="space-y-6">
-          <!-- Timeline Card -->
-          <div class="bg-white rounded-3xl border border-emerald-900/10 p-6 shadow-sm">
-            <h3 class="text-base font-bold text-emerald-950 font-display mb-4 flex items-center gap-2">
-              <i data-lucide="calendar" class="size-4 text-emerald-700"></i>
-              Census 2027 Roadmap
-            </h3>
-
-            <ol class="relative border-l border-emerald-200 ml-2 space-y-6">
-              <li class="ml-4">
-                <div class="absolute -left-1.5 mt-1.5 size-3 rounded-full border border-white bg-emerald-600"></div>
-                <time class="text-[10px] font-bold uppercase tracking-wider text-emerald-800">Current Phase</time>
-                <h4 class="text-xs font-bold text-emerald-950 mt-0.5">01. Citizen Awareness &amp; Prep</h4>
-                <p class="text-xs text-slate-500 mt-1">Familiarize with questionnaire and practice self-enumeration format.</p>
-              </li>
-              <li class="ml-4">
-                <div class="absolute -left-1.5 mt-1.5 size-3 rounded-full border border-white bg-slate-300"></div>
-                <time class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Phase 1</time>
-                <h4 class="text-xs font-bold text-slate-700 mt-0.5">02. Houselisting &amp; Housing</h4>
-                <p class="text-xs text-slate-500 mt-1">Survey of physical structures, amenities, water, lighting &amp; assets.</p>
-              </li>
-              <li class="ml-4">
-                <div class="absolute -left-1.5 mt-1.5 size-3 rounded-full border border-white bg-slate-300"></div>
-                <time class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Phase 2</time>
-                <h4 class="text-xs font-bold text-slate-700 mt-0.5">03. Population Enumeration</h4>
-                <p class="text-xs text-slate-500 mt-1">Headcount and individual demographics across all households.</p>
-              </li>
-            </ol>
+        <!-- Fact Check Result Box -->
+        <div id="factResultBox" class="mt-6 p-6 rounded-2xl bg-red-50 border-2 border-red-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span id="factBadge" class="rounded-md bg-red-600 text-white text-[11px] font-bold px-2.5 py-1 uppercase">FALSE • CRITICAL SCAM</span>
+              <span id="factConfidence" class="text-xs font-semibold text-red-900">Confidence: High</span>
+            </div>
+            <span class="text-[11px] text-slate-500">Verified against ORGI / PIB Fact Check</span>
           </div>
 
-          <!-- State Snapshot Card -->
-          <div class="bg-emerald-950 rounded-3xl p-6 text-white shadow-md">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base font-bold font-display text-emerald-100 flex items-center gap-2">
-                <i data-lucide="bar-chart-3" class="size-4 text-orange-400"></i>
-                State Census Profile
-              </h3>
-              <span id="profileStateName" class="text-xs font-semibold bg-white/10 px-2.5 py-1 rounded-full">Maharashtra</span>
-            </div>
+          <h4 id="factSummary" class="text-base font-bold text-red-950">Completely FALSE and a Dangerous Financial Scam.</h4>
+          <p id="factExplanation" class="text-xs text-red-900 leading-relaxed">
+            Census participation is 100% FREE. The government never charges any citizen for census enumeration, nor does it request bank OTPs, UPI PINs, or card details.
+          </p>
 
-            <div class="grid grid-cols-2 gap-3 text-left">
-              <div class="bg-white/10 rounded-2xl p-3">
-                <span class="text-[10px] uppercase tracking-wider text-emerald-200/70 block">2011 Pop.</span>
-                <span id="statPop" class="text-lg font-bold font-display text-white mt-1 block">112.4M</span>
-              </div>
-              <div class="bg-white/10 rounded-2xl p-3">
-                <span class="text-[10px] uppercase tracking-wider text-emerald-200/70 block">Literacy</span>
-                <span id="statLit" class="text-lg font-bold font-display text-white mt-1 block">82.3%</span>
-              </div>
-              <div class="bg-white/10 rounded-2xl p-3">
-                <span class="text-[10px] uppercase tracking-wider text-emerald-200/70 block">Sex Ratio</span>
-                <span id="statSex" class="text-lg font-bold font-display text-white mt-1 block">929 / 1000</span>
-              </div>
-              <div class="bg-white/10 rounded-2xl p-3">
-                <span class="text-[10px] uppercase tracking-wider text-emerald-200/70 block">Urban Share</span>
-                <span id="statUrb" class="text-lg font-bold font-display text-white mt-1 block">45.2%</span>
-              </div>
+          <div class="pt-3 border-t border-red-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div class="text-red-950">
+              <strong>Action:</strong> <span id="factAction">Do not pay any money or enter OTPs. Report to 1930 / cybercrime.gov.in.</span>
             </div>
-            <p class="text-[10px] text-emerald-300/60 mt-4 text-center">Historical reference data from Census of India 2011 (ORGI)</p>
+            <span class="text-slate-500 text-[11px]">Sources: PIB Fact Check, Census Act 1948</span>
           </div>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <!-- Footer -->
-  <footer class="border-t border-emerald-900/10 bg-white py-6 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <p>© 2026 Census Saathi (जन गण साथी) — Designed for civic transparency and citizen awareness.</p>
-      <div class="flex items-center gap-4 text-emerald-900 font-medium">
+  <!-- ========================================================
+       SECTION 7: PRIVACY, LEGAL CHARTER & PII GUARDRAILS (#safety)
+  ======================================================== -->
+  <section id="safety" class="py-14 border-t border-emerald-950/10 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Statutory Shield</span>
+        <h2 class="mt-1 text-3xl sm:text-4xl font-extrabold text-emerald-950">Your Privacy &amp; Legal Protection</h2>
+        <p class="mt-2 text-sm text-slate-600">
+          Individual Census schedules enjoy absolute confidentiality under Section 15 of the Census Act, 1948.
+        </p>
+      </div>
+
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        <div class="rounded-3xl border border-emerald-900/10 p-6 bg-slate-50">
+          <div class="size-10 rounded-2xl bg-emerald-900 text-white grid place-items-center mb-4">
+            <i data-lucide="scale" class="size-5"></i>
+          </div>
+          <h4 class="text-base font-bold text-emerald-950">Court Inadmissibility</h4>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            Under Section 15 of the Census Act 1948, your individual answers cannot be accessed by police, tax authorities, or produced as evidence in any judicial court.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-emerald-900/10 p-6 bg-slate-50">
+          <div class="size-10 rounded-2xl bg-emerald-900 text-white grid place-items-center mb-4">
+            <i data-lucide="shield-check" class="size-5"></i>
+          </div>
+          <h4 class="text-base font-bold text-emerald-950">Zero Real Aadhaar Policy</h4>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            Census Saathi strictly forbids and automatically scrubs real Aadhaar numbers or identity document uploads. All practice tools run purely in local browser memory.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-emerald-900/10 p-6 bg-slate-50">
+          <div class="size-10 rounded-2xl bg-emerald-900 text-white grid place-items-center mb-4">
+            <i data-lucide="lock" class="size-5"></i>
+          </div>
+          <h4 class="text-base font-bold text-emerald-950">No Data Persistence</h4>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            No citizen account or registration is required to use this tool. Your session preferences remain entirely local on your device.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 8: SEARCHABLE CATEGORIZED FAQS (#faqs)
+  ======================================================== -->
+  <section id="faqs" class="py-14 border-t border-emerald-950/10 bg-[#f7f7f1]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-8">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Clear Answers</span>
+        <h2 class="mt-1 text-3xl sm:text-4xl font-extrabold text-emerald-950">Frequently Asked Questions</h2>
+        <p class="mt-2 text-sm text-slate-600">Search official explanations regarding self-enumeration, enumerator visits, legal mandates, and scam alerts.</p>
+      </div>
+
+      <!-- FAQ Search Bar -->
+      <div class="max-w-2xl mx-auto mb-6">
+        <div class="relative">
+          <i data-lucide="search" class="size-4 text-slate-400 absolute left-4 top-3.5"></i>
+          <input id="faqSearchInput" oninput="renderFaqs()" type="text" placeholder="Search FAQs (e.g., Aadhaar, fine, self-enumeration, OTP)..." class="w-full rounded-2xl border border-slate-300 pl-11 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-emerald-800 bg-white" />
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div id="faqCatContainer" class="flex flex-wrap justify-center gap-2 mb-8">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- FAQ List Accordion -->
+      <div id="faqList" class="max-w-3xl mx-auto space-y-3">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 9: VERIFIED OFFICIAL PORTALS DIRECTORY (#resources)
+  ======================================================== -->
+  <section id="resources" class="py-12 border-t border-emerald-950/10 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+          <h3 class="text-xl font-bold text-emerald-950">Official Government Portals</h3>
+          <p class="text-xs text-slate-500">Only trust notifications hosted on official Government of India (.gov.in / .nic.in) domains.</p>
+        </div>
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-800">
+          <i data-lucide="shield-check" class="size-4 text-emerald-700"></i>
+          <span>Official Domain Verified</span>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+        <a href="https://censusindia.gov.in" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl border border-emerald-900/10 bg-slate-50 hover:bg-emerald-50 transition block">
+          <div class="flex items-center justify-between font-bold text-emerald-950">
+            <span>ORGI Official Portal</span>
+            <i data-lucide="external-link" class="size-3.5 text-emerald-700"></i>
+          </div>
+          <p class="text-slate-500 mt-1">censusindia.gov.in — Nodal portal for self-enumeration and gazettes.</p>
+        </a>
+
+        <a href="https://factcheck.pib.gov.in" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl border border-emerald-900/10 bg-slate-50 hover:bg-emerald-50 transition block">
+          <div class="flex items-center justify-between font-bold text-emerald-950">
+            <span>PIB Fact Check Unit</span>
+            <i data-lucide="external-link" class="size-3.5 text-emerald-700"></i>
+          </div>
+          <p class="text-slate-500 mt-1">factcheck.pib.gov.in — Government fact checking against viral claims.</p>
+        </a>
+
+        <a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl border border-emerald-900/10 bg-slate-50 hover:bg-emerald-50 transition block">
+          <div class="flex items-center justify-between font-bold text-emerald-950">
+            <span>Cybercrime Helpline 1930</span>
+            <i data-lucide="external-link" class="size-3.5 text-emerald-700"></i>
+          </div>
+          <p class="text-slate-500 mt-1">cybercrime.gov.in — Report census phishing, fake APKs, and fraud.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       AI COPILOT FLOATING DRAWER / MODAL
+  ======================================================== -->
+  <div id="aiDrawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-white shadow-2xl border-l border-emerald-900/10 flex flex-col transform translate-x-full transition-transform duration-300">
+    <!-- Header -->
+    <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-emerald-950 text-white">
+      <div class="flex items-center gap-2.5">
+        <div class="size-8 rounded-xl bg-emerald-800 text-white grid place-items-center">
+          <i data-lucide="bot" class="size-4 text-orange-400"></i>
+        </div>
+        <div>
+          <span class="block text-sm font-bold">Census Saathi AI Copilot</span>
+          <span class="block text-[10px] text-emerald-200">Grounded in Census Act 1948</span>
+        </div>
+      </div>
+      <button onclick="toggleAiDrawer(false)" class="p-1 rounded-lg hover:bg-white/10 text-white">
+        <i data-lucide="x" class="size-5"></i>
+      </button>
+    </div>
+
+    <!-- Messages Container -->
+    <div id="aiMessages" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar text-xs">
+      <div class="p-3.5 rounded-2xl bg-emerald-50 text-emerald-950 border border-emerald-200">
+        <span class="font-bold text-[11px] block text-emerald-900 mb-1">Namaste! I am Census Saathi.</span>
+        Ask me anything about Census 2027, digital self-enumeration, Phase 1 &amp; Phase 2 questionnaires, or verify suspicious WhatsApp messages!
+      </div>
+    </div>
+
+    <!-- Quick Suggested Prompts -->
+    <div class="p-2 border-t border-slate-100 bg-slate-50 flex flex-wrap gap-1.5 text-[11px]">
+      <button onclick="sendQuickAi('Will enumerator ask for my Aadhaar number?')" class="rounded-lg bg-white border border-slate-200 px-2 py-1 hover:bg-slate-100">🔒 Aadhaar required?</button>
+      <button onclick="sendQuickAi('What are the questions in Phase 1 Houselisting?')" class="rounded-lg bg-white border border-slate-200 px-2 py-1 hover:bg-slate-100">📋 Phase 1 questions</button>
+      <button onclick="sendQuickAi('How does digital self-enumeration work?')" class="rounded-lg bg-white border border-slate-200 px-2 py-1 hover:bg-slate-100">📱 Digital SEAN</button>
+    </div>
+
+    <!-- Input Footer -->
+    <div class="p-3 border-t border-slate-200 bg-white">
+      <form onsubmit="handleAiSubmit(event)" class="flex gap-2">
+        <input id="aiChatInput" type="text" placeholder="Ask your question..." class="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-emerald-800" />
+        <button type="submit" class="bg-emerald-900 hover:bg-emerald-800 text-white px-3.5 py-2 rounded-xl font-bold text-xs flex items-center justify-center transition">
+          <i data-lucide="send" class="size-3.5"></i>
+        </button>
+      </form>
+      <span class="block text-[10px] text-slate-400 mt-1 text-center">Zero PII storage • Redacts numerical IDs</span>
+    </div>
+  </div>
+
+  <!-- Floating Copilot Quick Bubble -->
+  <button onclick="toggleAiDrawer(true)" class="fixed bottom-6 right-6 z-40 size-14 rounded-full bg-emerald-900 hover:bg-emerald-800 text-white shadow-2xl grid place-items-center transition-all hover:scale-105 border-2 border-orange-400">
+    <i data-lucide="bot" class="size-6 text-orange-300"></i>
+  </button>
+
+  <!-- ========================================================
+       FOOTER
+  ======================================================== -->
+  <footer class="border-t border-emerald-900/10 bg-white py-8 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="grid size-8 place-items-center rounded-xl bg-emerald-900 text-white font-bold font-display text-xs">जन</div>
+        <p>© 2026 Census Saathi (जन गण साथी) — Designed for civic awareness &amp; transparency.</p>
+      </div>
+      <div class="flex items-center gap-4 text-emerald-900 font-semibold">
+        <a href="#journey" class="hover:underline">Home</a>
+        <span>•</span>
         <a href="https://censusindia.gov.in" target="_blank" rel="noopener noreferrer" class="hover:underline">Official ORGI Portal</a>
         <span>•</span>
         <span>Census Act 1948 Protected</span>
@@ -406,98 +957,423 @@
     </div>
   </footer>
 
+  <!-- ========================================================
+       APPLICATION LOGIC & DATASETS SCRIPT
+  ======================================================== -->
   <script>
-    const stateDataMap = {
-      "Maharashtra": { pop: "112.4M", lit: "82.3%", sex: "929", urb: "45.2%" },
-      "Uttar Pradesh": { pop: "199.8M", lit: "67.7%", sex: "912", urb: "22.3%" },
-      "Bihar": { pop: "104.1M", lit: "61.8%", sex: "918", urb: "11.3%" },
-      "West Bengal": { pop: "91.3M", lit: "76.3%", sex: "950", urb: "31.9%" },
-      "Madhya Pradesh": { pop: "72.6M", lit: "69.3%", sex: "931", urb: "27.6%" },
-      "Tamil Nadu": { pop: "72.1M", lit: "80.1%", sex: "996", urb: "48.4%" },
-      "Rajasthan": { pop: "68.5M", lit: "66.1%", sex: "928", urb: "24.9%" },
-      "Karnataka": { pop: "61.1M", lit: "75.4%", sex: "973", urb: "38.7%" },
-      "Gujarat": { pop: "60.4M", lit: "78.0%", sex: "919", urb: "42.6%" },
-      "Andhra Pradesh": { pop: "49.5M", lit: "67.0%", sex: "993", urb: "29.5%" },
-      "Kerala": { pop: "33.4M", lit: "94.0%", sex: "1084", urb: "47.7%" },
-      "Delhi (NCT)": { pop: "16.8M", lit: "86.2%", sex: "868", urb: "97.5%" },
-      "Punjab": { pop: "27.7M", lit: "75.8%", sex: "895", urb: "37.5%" },
-      "Haryana": { pop: "25.4M", lit: "75.6%", sex: "879", urb: "34.9%" },
-      "Odisha": { pop: "42.0M", lit: "72.9%", sex: "979", urb: "16.7%" },
-      "Telangana": { pop: "35.2M", lit: "66.5%", sex: "988", urb: "38.9%" },
-      "Assam": { pop: "31.2M", lit: "72.2%", sex: "958", urb: "14.1%" }
-    };
+    // State datasets
+    const statesData = [
+      { code: "MH", name: "Maharashtra", capital: "Mumbai", population2011: "112.4M", literacy2011: "82.3%", sexRatio2011: 929, urbanShare2011: "45.2%" },
+      { code: "UP", name: "Uttar Pradesh", capital: "Lucknow", population2011: "199.8M", literacy2011: "67.7%", sexRatio2011: 912, urbanShare2011: "22.3%" },
+      { code: "BR", name: "Bihar", capital: "Patna", population2011: "104.1M", literacy2011: "61.8%", sexRatio2011: 918, urbanShare2011: "11.3%" },
+      { code: "WB", name: "West Bengal", capital: "Kolkata", population2011: "91.3M", literacy2011: "76.3%", sexRatio2011: 950, urbanShare2011: "31.9%" },
+      { code: "MP", name: "Madhya Pradesh", capital: "Bhopal", population2011: "72.6M", literacy2011: "69.3%", sexRatio2011: 931, urbanShare2011: "27.6%" },
+      { code: "TN", name: "Tamil Nadu", capital: "Chennai", population2011: "72.1M", literacy2011: "80.1%", sexRatio2011: 996, urbanShare2011: "48.4%" },
+      { code: "RJ", name: "Rajasthan", capital: "Jaipur", population2011: "68.5M", literacy2011: "66.1%", sexRatio2011: 928, urbanShare2011: "24.9%" },
+      { code: "KA", name: "Karnataka", capital: "Bengaluru", population2011: "61.1M", literacy2011: "75.4%", sexRatio2011: 973, urbanShare2011: "38.7%" },
+      { code: "GJ", name: "Gujarat", capital: "Gandhinagar", population2011: "60.4M", literacy2011: "78.0%", sexRatio2011: 919, urbanShare2011: "42.6%" },
+      { code: "AP", name: "Andhra Pradesh", capital: "Amaravati", population2011: "49.5M", literacy2011: "67.0%", sexRatio2011: 993, urbanShare2011: "29.5%" },
+      { code: "OR", name: "Odisha", capital: "Bhubaneswar", population2011: "42.0M", literacy2011: "72.9%", sexRatio2011: 979, urbanShare2011: "16.7%" },
+      { code: "TG", name: "Telangana", capital: "Hyderabad", population2011: "35.2M", literacy2011: "66.5%", sexRatio2011: 988, urbanShare2011: "38.9%" },
+      { code: "KL", name: "Kerala", capital: "Thiruvananthapuram", population2011: "33.4M", literacy2011: "94.0%", sexRatio2011: 1084, urbanShare2011: "47.7%" },
+      { code: "JH", name: "Jharkhand", capital: "Ranchi", population2011: "33.0M", literacy2011: "66.4%", sexRatio2011: 948, urbanShare2011: "24.0%" },
+      { code: "AS", name: "Assam", capital: "Dispur", population2011: "31.2M", literacy2011: "72.2%", sexRatio2011: 958, urbanShare2011: "14.1%" },
+      { code: "PB", name: "Punjab", capital: "Chandigarh", population2011: "27.7M", literacy2011: "75.8%", sexRatio2011: 895, urbanShare2011: "37.5%" },
+      { code: "CT", name: "Chhattisgarh", capital: "Raipur", population2011: "25.5M", literacy2011: "70.3%", sexRatio2011: 991, urbanShare2011: "23.2%" },
+      { code: "HR", name: "Haryana", capital: "Chandigarh", population2011: "25.4M", literacy2011: "75.6%", sexRatio2011: 879, urbanShare2011: "34.9%" },
+      { code: "DL", name: "Delhi (NCT)", capital: "New Delhi", population2011: "16.8M", literacy2011: "86.2%", sexRatio2011: 868, urbanShare2011: "97.5%" },
+      { code: "JK", name: "Jammu and Kashmir (UT)", capital: "Srinagar", population2011: "12.3M", literacy2011: "67.2%", sexRatio2011: 889, urbanShare2011: "27.4%" },
+      { code: "UT", name: "Uttarakhand", capital: "Dehradun", population2011: "10.1M", literacy2011: "78.8%", sexRatio2011: 963, urbanShare2011: "30.2%" },
+      { code: "HP", name: "Himachal Pradesh", capital: "Shimla", population2011: "6.9M", literacy2011: "82.8%", sexRatio2011: 972, urbanShare2011: "10.0%" },
+      { code: "TR", name: "Tripura", capital: "Agartala", population2011: "3.7M", literacy2011: "87.2%", sexRatio2011: 960, urbanShare2011: "26.2%" },
+      { code: "ML", name: "Meghalaya", capital: "Shillong", population2011: "3.0M", literacy2011: "74.4%", sexRatio2011: 989, urbanShare2011: "20.1%" },
+      { code: "MN", name: "Manipur", capital: "Imphal", population2011: "2.9M", literacy2011: "76.9%", sexRatio2011: 985, urbanShare2011: "29.2%" },
+      { code: "NL", name: "Nagaland", capital: "Kohima", population2011: "2.0M", literacy2011: "79.6%", sexRatio2011: 931, urbanShare2011: "28.9%" },
+      { code: "GA", name: "Goa", capital: "Panaji", population2011: "1.5M", literacy2011: "88.7%", sexRatio2011: 973, urbanShare2011: "62.2%" },
+      { code: "AR", name: "Arunachal Pradesh", capital: "Itanagar", population2011: "1.4M", literacy2011: "65.4%", sexRatio2011: 938, urbanShare2011: "22.9%" },
+      { code: "PY", name: "Puducherry (UT)", capital: "Puducherry", population2011: "1.2M", literacy2011: "85.8%", sexRatio2011: 1037, urbanShare2011: "68.3%" },
+      { code: "MZ", name: "Mizoram", capital: "Aizawl", population2011: "1.1M", literacy2011: "91.3%", sexRatio2011: 976, urbanShare2011: "52.1%" },
+      { code: "CH", name: "Chandigarh (UT)", capital: "Chandigarh", population2011: "1.1M", literacy2011: "86.0%", sexRatio2011: 818, urbanShare2011: "97.3%" },
+      { code: "SK", name: "Sikkim", capital: "Gangtok", population2011: "0.6M", literacy2011: "81.4%", sexRatio2011: 890, urbanShare2011: "25.2%" },
+      { code: "AN", name: "Andaman & Nicobar (UT)", capital: "Port Blair", population2011: "0.4M", literacy2011: "86.6%", sexRatio2011: 876, urbanShare2011: "37.7%" },
+      { code: "DN", name: "Dadra & Nagar Haveli (UT)", capital: "Daman", population2011: "0.6M", literacy2011: "77.7%", sexRatio2011: 774, urbanShare2011: "75.2%" },
+      { code: "LA", name: "Ladakh (UT)", capital: "Leh", population2011: "0.3M", literacy2011: "77.5%", sexRatio2011: 869, urbanShare2011: "22.6%" },
+      { code: "LD", name: "Lakshadweep (UT)", capital: "Kavaratti", population2011: "0.06M", literacy2011: "91.8%", sexRatio2011: 946, urbanShare2011: "78.0%" }
+    ];
 
-    function savePreferences() {
-      const lang = document.getElementById('prefLang').value;
-      const state = document.getElementById('prefState').value;
-      localStorage.setItem('census-saathi-language', lang);
-      localStorage.setItem('census-saathi-state', state);
-      updateUI();
+    // Preloaded verified claims
+    const preloadedRumours = [
+      {
+        claim: "You must pay ₹500 fee and share an OTP to register for Census 2027 online.",
+        status: "FALSE • CRITICAL SCAM",
+        confidence: "High",
+        summary: "Completely FALSE and a Dangerous Financial Scam.",
+        explanation: "Census participation is 100% FREE. The government never charges any citizen for census enumeration, nor does it request bank OTPs, UPI PINs, or card details. Any message requesting payment is phishing fraud.",
+        action: "Do not pay any money, do not share OTPs, and immediately report phishing links to cybercrime.gov.in or helpline 1930.",
+        sources: ["ORGI (censusindia.gov.in)", "PIB Fact Check"]
+      },
+      {
+        claim: "Aadhaar card is compulsory and must be handed over to the Census enumerator.",
+        status: "FALSE • DEBUNKED",
+        confidence: "High",
+        summary: "FALSE — Aadhaar is NOT mandatory for Census 2027.",
+        explanation: "Providing an Aadhaar number is completely voluntary under the Census Act 1948. Enumerators have no authority to demand physical possession of identity documents.",
+        action: "Answer questions verbally or self-enumerate online without surrendering physical cards.",
+        sources: ["Census Act 1948", "MHA Guidelines"]
+      },
+      {
+        claim: "Census officials can ask for bank account PINs or Net Banking passwords.",
+        status: "FALSE • CRITICAL SCAM",
+        confidence: "High",
+        summary: "Completely FALSE — Illegal Scam Attempt.",
+        explanation: "No Census schedule asks for bank account credentials, ATM PINs, or passwords. Phase 1 only asks if the household has access to banking services (Yes/No).",
+        action: "Never disclose financial passwords. Report immediately to 1930.",
+        sources: ["RBI Safety Bulletin", "MHA Cyber Advisory"]
+      },
+      {
+        claim: "Census answers will be shared with the Income Tax department to catch tax evaders.",
+        status: "FALSE • DEBUNKED",
+        confidence: "High",
+        summary: "FALSE — Strict legal statutory confidentiality applies.",
+        explanation: "Under Section 15 of the Census Act 1948, individual schedules are strictly confidential and inadmissible as evidence in courts or for taxation.",
+        action: "Provide responses truthfully without fear of administrative or taxation scrutiny.",
+        sources: ["Section 15 Census Act 1948", "Supreme Court Rulings"]
+      },
+      {
+        claim: "Download the Census 2027 APK from WhatsApp to verify your family.",
+        status: "CRITICAL THREAT • MALWARE",
+        confidence: "High",
+        summary: "CRITICAL THREAT — Malicious Phishing / Malware APK.",
+        explanation: "The Government never distributes official applications via WhatsApp links. Such APKs often contain spyware or financial Trojans.",
+        action: "Never install APK files received via social media. Access only on Google Play Store or censusindia.gov.in.",
+        sources: ["CERT-In Advisory", "Cyber Dost MHA"]
+      }
+    ];
+
+    // FAQ Dataset
+    const faqData = [
+      { id: "faq1", category: "Census Basics", question: "What is the Census and who conducts it in India?", answer: "The Census is a nationwide decennial count of all persons residing in India. It is conducted by the Office of the Registrar General & Census Commissioner, India (ORGI) under the Ministry of Home Affairs, Government of India, in accordance with the Census Act, 1948." },
+      { id: "faq2", category: "Census Basics", question: "Is participating in the Census mandatory for all residents?", answer: "Yes. Under Section 10 of the Census Act, 1948, every citizen and resident is legally obligated to answer census questions truthfully. In return, Section 15 legally guarantees complete confidentiality." },
+      { id: "faq3", category: "Self Enumeration", question: "What is digital self-enumeration and how will it work?", answer: "Digital self-enumeration allows households to fill out their Census questionnaire online through the official Census portal or mobile app prior to field visits. Once submitted, an acknowledgment number (SEAN) is generated to show the visiting enumerator." },
+      { id: "faq4", category: "Self Enumeration", question: "Does Census Saathi submit my Census responses to the government?", answer: "No. Census Saathi is an educational civic companion. It does not submit or record real responses. Official submission happens strictly on censusindia.gov.in." },
+      { id: "faq5", category: "Enumerator Visit", question: "How can I verify a real Census enumerator when they visit?", answer: "Official Census enumerators carry a government-issued Photo Identity Card and an authorization letter from the local Charge Officer. They will never ask for banking details, OTPs, processing fees, or document handovers." },
+      { id: "faq6", category: "Privacy & Legal", question: "Is Aadhaar mandatory to be provided for Census 2027?", answer: "No. Aadhaar is not legally mandatory for Census participation. The Census of India collects demographic and socio-economic information without forcing Aadhaar." },
+      { id: "faq7", category: "Privacy & Legal", category: "Privacy & Legal", question: "Can Census data be shared with the police, tax authorities, or courts?", answer: "No. Under Section 15 of the Census Act, 1948, individual census records are confidential and inadmissible as evidence in any court of law." },
+      { id: "faq8", category: "Scam Prevention", question: "Is there any fee or charge to fill the Census form or self-enumerate?", answer: "No! Census participation is 100% free of cost. Any website, message, or person asking for a fee, processing charge, payment, or OTP is fraudulent." },
+      { id: "faq9", category: "Scam Prevention", question: "What should I do if I receive a suspicious WhatsApp link claiming to be Census registration?", answer: "Do not click unverified links or download APK files. Verify announcements only on the official government website censusindia.gov.in." }
+    ];
+
+    const faqCategories = ["All", "Census Basics", "Self Enumeration", "Enumerator Visit", "Privacy & Legal", "Scam Prevention"];
+    let currentFaqCat = "All";
+
+    // Chart.js instance
+    let myChart = null;
+
+    // Current app state
+    let currentState = "Maharashtra";
+    let currentLanguage = "English";
+
+    // Populate State dropdown
+    function initDropdowns() {
+      const select = document.getElementById('globalState');
+      select.innerHTML = '';
+      statesData.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.name;
+        opt.textContent = s.name;
+        if (s.name === currentState) opt.selected = true;
+        select.appendChild(opt);
+      });
     }
 
-    function loadPreferences() {
-      const savedLang = localStorage.getItem('census-saathi-language') || 'English';
-      const savedState = localStorage.getItem('census-saathi-state') || 'Maharashtra';
-      document.getElementById('prefLang').value = savedLang;
-      document.getElementById('prefState').value = savedState;
-      updateUI();
+    function onStateChange(stateName) {
+      currentState = stateName;
+      localStorage.setItem('census-saathi-state', stateName);
+      updateStateViews();
     }
 
-    function updateUI() {
-      const lang = document.getElementById('prefLang').value;
-      const state = document.getElementById('prefState').value;
-
-      document.getElementById('heroStateBadge').textContent = state;
-      document.getElementById('heroAiLang').textContent = 'Multilingual assistance in ' + lang;
-      document.getElementById('dashStateDisplay').textContent = state;
-      document.getElementById('dashLangDisplay').textContent = lang;
-      document.getElementById('profileStateName').textContent = state;
-
-      const data = stateDataMap[state] || stateDataMap["Maharashtra"];
-      document.getElementById('statPop').textContent = data.pop;
-      document.getElementById('statLit').textContent = data.lit;
-      document.getElementById('statSex').textContent = data.sex + ' / 1000';
-      document.getElementById('statUrb').textContent = data.urb;
+    function onLangChange(langName) {
+      currentLanguage = langName;
+      localStorage.setItem('census-saathi-language', langName);
+      document.getElementById('heroLangCardText').textContent = 'Support in ' + langName;
+      
+      const greetings = {
+        'Hindi': 'नमस्ते',
+        'Marathi': 'नमस्कार',
+        'Bengali': 'নমস্কার',
+        'Tamil': 'வணக்கம்',
+        'Telugu': 'నమస్కారం',
+        'Gujarati': 'નમસ્તે',
+        'Kannada': 'ನಮಸ್ಕಾರ',
+        'Malayalam': 'നമസ്കാരം',
+        'Punjabi': 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ',
+        'Odia': 'ନମସ୍କାର',
+        'Assamese': 'নমস্কাৰ',
+        'Urdu': 'آداب'
+      };
+      const greet = greetings[langName] || 'नमस्ते';
+      document.getElementById('heroGreetingBadge').textContent = greet + ' • CENSUS 2027 CIVIC COMPANION';
     }
 
-    function showDashboardView() {
-      savePreferences();
-      document.getElementById('landingView').classList.add('hidden');
-      document.getElementById('dashboardView').classList.remove('hidden');
-      document.getElementById('navBtnText').textContent = 'Home Setup';
-      window.history.pushState({}, '', '/dashboard');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function updateStateViews() {
+      const stateObj = statesData.find(s => s.name === currentState) || statesData[0];
+      document.getElementById('heroStatePill').textContent = stateObj.name;
+      document.getElementById('cardPop').textContent = stateObj.population2011;
+      document.getElementById('cardLit').textContent = stateObj.literacy2011;
+      document.getElementById('cardSex').textContent = stateObj.sexRatio2011;
+      document.getElementById('cardUrb').textContent = stateObj.urbanShare2011;
+      document.getElementById('timelineStateStatus').textContent = stateObj.name + ' Schedule: Notification Pending by ORGI';
     }
 
-    function showLandingView() {
-      document.getElementById('dashboardView').classList.add('hidden');
-      document.getElementById('landingView').classList.remove('hidden');
-      document.getElementById('navBtnText').textContent = 'Open Dashboard';
-      window.history.pushState({}, '', '/');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleView() {
-      if (document.getElementById('dashboardView').classList.contains('hidden')) {
-        showDashboardView();
-      } else {
-        showLandingView();
+    // Simulator step switcher
+    function setSimStep(stepIdx) {
+      for (let i = 0; i <= 4; i++) {
+        const stepEl = document.getElementById('simStep' + i);
+        const tabEl = document.getElementById('simTab' + i);
+        if (stepEl) {
+          if (i === stepIdx) stepEl.classList.remove('hidden');
+          else stepEl.classList.add('hidden');
+        }
+        if (tabEl) {
+          if (i === stepIdx) {
+            tabEl.className = 'flex items-center gap-2 text-xs font-bold text-emerald-800 cursor-pointer';
+            tabEl.querySelector('span').className = 'size-6 rounded-full bg-emerald-800 text-white grid place-items-center text-xs';
+          } else {
+            tabEl.className = 'flex items-center gap-2 text-xs font-bold text-slate-400 cursor-pointer';
+            tabEl.querySelector('span').className = 'size-6 rounded-full bg-slate-200 text-slate-700 grid place-items-center text-xs';
+          }
+        }
       }
     }
 
-    function setQuery(q) {
-      document.getElementById('aiQuestionInput').value = q;
-      askQuestion();
+    function generateMockSean() {
+      const stateObj = statesData.find(s => s.name === currentState) || statesData[0];
+      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+      const code = `DEMO-2027-${stateObj.code}-${randomSuffix}`;
+      document.getElementById('mockSeanDisplay').textContent = code;
+      setSimStep(4);
     }
 
-    async function askQuestion() {
-      const q = document.getElementById('aiQuestionInput').value.trim();
+    // Chart.js rendering
+    function initChart() {
+      const ctx = document.getElementById('historicalChart').getContext('2d');
+      switchChart('population');
+    }
+
+    function switchChart(mode) {
+      document.getElementById('tabChartPop').className = 'px-4 py-2 rounded-xl text-xs font-bold ' + (mode === 'population' ? 'bg-emerald-900 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200');
+      document.getElementById('tabChartLit').className = 'px-4 py-2 rounded-xl text-xs font-bold ' + (mode === 'literacy' ? 'bg-emerald-900 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200');
+      document.getElementById('tabChartUrb').className = 'px-4 py-2 rounded-xl text-xs font-bold ' + (mode === 'rural_urban' ? 'bg-emerald-900 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200');
+      document.getElementById('tabChartTop').className = 'px-4 py-2 rounded-xl text-xs font-bold ' + (mode === 'state_matrix' ? 'bg-emerald-900 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200');
+
+      const canvasContainer = document.getElementById('chartCanvasContainer');
+      const leaderboardContainer = document.getElementById('leaderboardContainer');
+
+      if (mode === 'state_matrix') {
+        canvasContainer.classList.add('hidden');
+        leaderboardContainer.classList.remove('hidden');
+        document.getElementById('aiInsightSummary').innerHTML = "State variations demonstrate India's regional diversity. Kerala leads in literacy (94.0%) and sex ratio (1084), while Delhi is 97.5% urbanized.";
+        return;
+      }
+
+      canvasContainer.classList.remove('hidden');
+      leaderboardContainer.classList.add('hidden');
+
+      if (myChart) myChart.destroy();
+      const ctx = document.getElementById('historicalChart').getContext('2d');
+
+      if (mode === 'population') {
+        myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['1951', '1961', '1971', '1981', '1991', '2001', '2011'],
+            datasets: [{
+              label: 'National Population (Millions)',
+              data: [361.1, 439.2, 548.2, 683.3, 846.4, 1028.7, 1210.9],
+              backgroundColor: '#064e3b',
+              borderRadius: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+          }
+        });
+        document.getElementById('aiInsightSummary').innerHTML = "India’s population increased from <strong>361.1M (1951)</strong> to <strong>1.21B (2011)</strong>, with decadal growth rates gradually stabilizing from 24.8% (1971) to 17.7% (2011).";
+      } else if (mode === 'literacy') {
+        myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['1951', '1961', '1971', '1981', '1991', '2001', '2011'],
+            datasets: [
+              { label: 'Overall Literacy (%)', data: [18.3, 28.3, 34.5, 43.6, 52.2, 64.8, 74.0], borderColor: '#064e3b', tension: 0.3 },
+              { label: 'Male Literacy (%)', data: [27.2, 40.4, 46.0, 56.4, 64.1, 75.3, 82.1], borderColor: '#0284c7', tension: 0.3 },
+              { label: 'Female Literacy (%)', data: [8.9, 15.4, 22.0, 29.8, 39.3, 53.7, 65.5], borderColor: '#ea580c', tension: 0.3 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+        document.getElementById('aiInsightSummary').innerHTML = "Female literacy witnessed an extraordinary leap from <strong>8.9% in 1951</strong> to <strong>65.5% in 2011</strong>, closing the historic educational gender gap.";
+      } else if (mode === 'rural_urban') {
+        myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Literacy Rate (%)', 'Electricity (%)', 'Tap Water (%)', 'Work Participation (%)'],
+            datasets: [
+              { label: 'Rural (2011)', data: [67.8, 55.3, 30.8, 41.8], backgroundColor: '#10b981' },
+              { label: 'Urban (2011)', data: [84.1, 92.7, 70.6, 35.3], backgroundColor: '#ea580c' }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+        document.getElementById('aiInsightSummary').innerHTML = "2011 data highlights urban-rural infrastructural contrasts, with urban tap water access at 70.6% vs 30.8% in rural villages.";
+      }
+    }
+
+    function explainCurrentChart() {
+      const box = document.getElementById('aiInsightSummary');
+      box.innerHTML = '<em>Analyzing historical census matrices and demographic velocity...</em>';
+      setTimeout(() => {
+        box.innerHTML = `<strong>Insight:</strong> The demographic transition across 1951–2011 establishes essential baselines for Census 2027, measuring rapid digital connectivity and urbanization.`;
+      }, 600);
+    }
+
+    // Rumour & Fact Checker
+    function testClaim(idx) {
+      const item = preloadedRumours[idx];
+      document.getElementById('claimInput').value = item.claim;
+      displayFactResult(item);
+    }
+
+    function checkCustomClaim() {
+      const query = document.getElementById('claimInput').value.trim();
+      if (!query) return;
+
+      const lower = query.toLowerCase();
+      let matched = preloadedRumours.find(r => r.claim.toLowerCase().includes(lower) || lower.split(' ').some(w => w.length > 3 && r.claim.toLowerCase().includes(w)));
+      if (!matched) {
+        if (lower.includes('fee') || lower.includes('pay') || lower.includes('otp') || lower.includes('500')) {
+          matched = preloadedRumours[0];
+        } else if (lower.includes('aadhaar')) {
+          matched = preloadedRumours[1];
+        } else if (lower.includes('bank') || lower.includes('password') || lower.includes('pin')) {
+          matched = preloadedRumours[2];
+        } else if (lower.includes('tax') || lower.includes('income')) {
+          matched = preloadedRumours[3];
+        } else {
+          matched = {
+            claim: query,
+            status: "OFFICIAL VERIFICATION",
+            confidence: "High",
+            summary: "Protected under Census Act 1948",
+            explanation: "All official Census 2027 activities are strictly governed by statutory protections. No private records are ever shared or commercialized.",
+            action: "Always verify announcements on censusindia.gov.in.",
+            sources: ["ORGI", "Census Act 1948"]
+          };
+        }
+      }
+      displayFactResult(matched);
+    }
+
+    function displayFactResult(item) {
+      document.getElementById('factBadge').textContent = item.status;
+      document.getElementById('factConfidence').textContent = 'Confidence: ' + item.confidence;
+      document.getElementById('factSummary').textContent = item.summary;
+      document.getElementById('factExplanation').textContent = item.explanation;
+      document.getElementById('factAction').textContent = item.action;
+    }
+
+    // FAQ Accordion & Search
+    function renderFaqCategories() {
+      const cont = document.getElementById('faqCatContainer');
+      cont.innerHTML = '';
+      faqCategories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.textContent = cat;
+        btn.className = 'px-3.5 py-1.5 rounded-full text-xs font-semibold transition ' + (currentFaqCat === cat ? 'bg-emerald-900 text-white shadow-sm' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100');
+        btn.onclick = () => {
+          currentFaqCat = cat;
+          renderFaqCategories();
+          renderFaqs();
+        };
+        cont.appendChild(btn);
+      });
+    }
+
+    function renderFaqs() {
+      const q = document.getElementById('faqSearchInput').value.toLowerCase();
+      const list = document.getElementById('faqList');
+      list.innerHTML = '';
+
+      const filtered = faqData.filter(item => {
+        const matchCat = (currentFaqCat === 'All' || item.category === currentFaqCat);
+        const matchQuery = (!q || item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q));
+        return matchCat && matchQuery;
+      });
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="p-6 text-center text-xs text-slate-500 bg-white rounded-2xl border border-slate-200">No matching FAQs found. You can ask our AI Copilot directly!</div>';
+        return;
+      }
+
+      filtered.forEach(faq => {
+        const itemEl = document.createElement('details');
+        itemEl.className = 'group p-4 rounded-2xl bg-white border border-slate-200 shadow-sm';
+        itemEl.innerHTML = `
+          <summary class="flex justify-between items-center font-bold text-sm text-emerald-950 cursor-pointer list-none">
+            <span>${faq.question}</span>
+            <span class="transition group-open:rotate-180 text-emerald-700 text-base font-bold">&darr;</span>
+          </summary>
+          <p class="mt-3 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">${faq.answer}</p>
+        `;
+        list.appendChild(itemEl);
+      });
+    }
+
+    // AI Copilot Drawer & Chat
+    function toggleAiDrawer(open) {
+      const drawer = document.getElementById('aiDrawer');
+      if (open) {
+        drawer.classList.remove('translate-x-full');
+      } else {
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function sendQuickAi(q) {
+      document.getElementById('aiChatInput').value = q;
+      handleAiSubmit();
+    }
+
+    async function handleAiSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('aiChatInput');
+      const q = input.value.trim();
       if (!q) return;
 
-      const resBox = document.getElementById('aiResponseBox');
-      const resText = document.getElementById('aiResponseText');
-      resBox.classList.remove('hidden');
-      resText.textContent = 'Analyzing question and checking Census 2027 statutory guidelines...';
+      const msgs = document.getElementById('aiMessages');
+      
+      // User message
+      const userBubble = document.createElement('div');
+      userBubble.className = 'p-3 rounded-2xl bg-emerald-900 text-white ml-6 text-right';
+      userBubble.textContent = q;
+      msgs.appendChild(userBubble);
+      input.value = '';
+      msgs.scrollTop = msgs.scrollHeight;
+
+      // Loading bubble
+      const loadingBubble = document.createElement('div');
+      loadingBubble.className = 'p-3 rounded-2xl bg-slate-100 text-slate-600 mr-6 text-xs';
+      loadingBubble.textContent = 'Verifying Census Act guidelines...';
+      msgs.appendChild(loadingBubble);
+      msgs.scrollTop = msgs.scrollHeight;
 
       try {
         const res = await fetch('/api/ask', {
@@ -505,51 +1381,53 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             question: q,
-            selectedState: document.getElementById('prefState').value,
-            selectedLanguage: document.getElementById('prefLang').value,
+            selectedState: currentState,
+            selectedLanguage: currentLanguage,
             currentContext: 'dashboard'
           })
         });
 
         if (res.ok) {
           const data = await res.json();
-          resText.textContent = data.answer || data.fallbackAnswer;
+          loadingBubble.className = 'p-3.5 rounded-2xl bg-emerald-50 text-emerald-950 border border-emerald-200 mr-6';
+          loadingBubble.innerHTML = `<span class="font-bold text-[11px] block text-emerald-900 mb-1">Census Saathi Answer:</span>${data.answer || data.fallbackAnswer}`;
         } else {
-          fallbackAIResponse(q, resText);
+          showAiFallback(q, loadingBubble);
         }
       } catch {
-        fallbackAIResponse(q, resText);
+        showAiFallback(q, loadingBubble);
       }
+      msgs.scrollTop = msgs.scrollHeight;
     }
 
-    function fallbackAIResponse(q, elem) {
+    function showAiFallback(q, elem) {
+      elem.className = 'p-3.5 rounded-2xl bg-emerald-50 text-emerald-950 border border-emerald-200 mr-6';
       const lower = q.toLowerCase();
       if (lower.includes('aadhaar') || lower.includes('bank')) {
-        elem.textContent = "No. Official enumerators are strictly prohibited from asking for your Aadhaar card, bank account numbers, UPI PINs, or biometric scans. Census 2027 only collects housing characteristics and basic socio-demographic information.";
-      } else if (lower.includes('houselisting') || lower.includes('phase 1')) {
-        elem.textContent = "Phase 1 (Houselisting & Housing Census) covers 31 standard questions regarding building material, number of living rooms, drinking water source, lighting, toilet availability, cooking fuel, and household assets (radio, TV, vehicle, internet).";
+        elem.innerHTML = `<span class="font-bold text-[11px] block text-emerald-900 mb-1">Census Saathi:</span>No official enumerator will ever ask for your Aadhaar card or bank credentials. Census 2027 collects demographic parameters, not financial details.`;
+      } else if (lower.includes('phase 1') || lower.includes('houselisting')) {
+        elem.innerHTML = `<span class="font-bold text-[11px] block text-emerald-900 mb-1">Census Saathi:</span>Phase 1 (Houselisting) includes 31 standard questions about building materials, room count, drinking water, sanitation, fuel, and asset ownership.`;
       } else if (lower.includes('self-enumeration') || lower.includes('digital')) {
-        elem.textContent = "Digital self-enumeration will be accessible via the official Census 2027 portal/mobile app using mobile OTP verification. Once completed, a self-enumeration reference number will be provided to show the visiting enumerator for quick verification.";
+        elem.innerHTML = `<span class="font-bold text-[11px] block text-emerald-900 mb-1">Census Saathi:</span>Digital self-enumeration allows online completion prior to field visits via censusindia.gov.in. A reference number (SEAN) is generated to show the visiting enumerator.`;
       } else {
-        elem.textContent = "Census 2027 is conducted under the provisions of the Census Act 1948. All personal information provided is strictly confidential and protected by law.";
+        elem.innerHTML = `<span class="font-bold text-[11px] block text-emerald-900 mb-1">Census Saathi:</span>Census 2027 is conducted under the Census Act 1948. All personal data is legally protected and strictly confidential.`;
       }
     }
 
-    // Initialize on load
+    // Init on load
     window.addEventListener('DOMContentLoaded', () => {
-      loadPreferences();
-      lucide.createIcons();
-      if (window.location.pathname === '/dashboard') {
-        showDashboardView();
-      }
-    });
+      initDropdowns();
+      const savedState = localStorage.getItem('census-saathi-state') || 'Maharashtra';
+      const savedLang = localStorage.getItem('census-saathi-language') || 'English';
+      document.getElementById('globalState').value = savedState;
+      document.getElementById('globalLang').value = savedLang;
+      onStateChange(savedState);
+      onLangChange(savedLang);
 
-    window.addEventListener('popstate', () => {
-      if (window.location.pathname === '/dashboard') {
-        showDashboardView();
-      } else {
-        showLandingView();
-      }
+      renderFaqCategories();
+      renderFaqs();
+      initChart();
+      lucide.createIcons();
     });
   </script>
 </body>
